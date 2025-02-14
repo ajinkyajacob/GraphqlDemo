@@ -1,0 +1,15 @@
+{
+    "private": true,
+    "workspaces": [
+        "client",
+        "server"
+    ],
+    "scripts": {
+        "web": "npm run --workspace=client start",
+        "backend": "npm run --workspace=server dev",
+        "mongo": "npm run --workspace=server mongo",
+        "mongo:start": "npm run mongo -- up -- -d",
+        "mongo:restart": "npm run mongo -- restart",
+        "mongo:stop": "npm run mongo -- stop"
+    }
+}
