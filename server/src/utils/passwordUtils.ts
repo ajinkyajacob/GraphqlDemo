@@ -7,4 +7,4 @@ import bcrypt from "bcrypt";
   return hashedPassword;
 };
 
-export default  hashPassword 
+export  { hashPassword } 

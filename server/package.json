@@ -4,8 +4,9 @@
   "module": "module",
   "scripts": {
     "build": "tsc",
-    "start": "npm run build && node dist/src/index.js",
+    "start": "npm run build & node dist/src/index.js",
     "dev": "nodemon",
+    "ruru": "npx ruru -SP -p 4001 -e http://localhost:8500/graphql",
     "mongo": "cd src && sudo docker-compose "
   },
   "keywords": [],

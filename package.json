@@ -6,7 +6,8 @@
     ],
     "scripts": {
         "web": "npm run --workspace=client start",
-        "backend": "npm run --workspace=server dev",
+        "backend": "npm run mongo:start & npm run --workspace=server dev",
+        "ruru":"npm run --workspace=server ruru",
         "mongo": "npm run --workspace=server mongo",
         "mongo:start": "npm run mongo -- up -- -d",
         "mongo:restart": "npm run mongo -- restart",

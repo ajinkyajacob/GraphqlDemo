@@ -8,10 +8,10 @@ import {
     GraphQLBoolean,
   } from "graphql";
   import UserType from "./User";
-  import MovieType from "./Movie";
+  import {MovieType,MovieTypePaginated} from "./Movie";
   import Movie from "../models/Movie";
   import User from "../models/User";
-  import  hashPassword  from "../../utils/passwordUtils";
+  import { hashPassword }  from "../utils/passwordUtils"
   
   // Queries
   const RootQuery = new GraphQLObjectType({
@@ -20,9 +20,10 @@ import {
       // Query to get all users
       users: {
         type: GraphQLList(UserType),
-        resolve: async () => {
+        args: { page: { type: GraphQLInt }, pageSize: { type: GraphQLInt } },
+        resolve: async (_, args) => {
           try {
-            const users = await User.find();
+            const users = await User.find().skip(args.page).limit(args.limit);
             return users.map((user) => ({
               ...user.toObject(),
               id: user._id,
@@ -60,10 +61,12 @@ import {
   
       // Query to get all movies
       movies: {
-        type: GraphQLList(MovieType),
-        resolve: async () => {
+        type: MovieTypePaginated,
+        args: { page: { type: GraphQLInt }, pageSize: { type: GraphQLInt } },
+
+        resolve: async (_, args) => {
           try {
-            return await Movie.find();
+            return  {data: ( await Movie.find().skip(args.page).limit(args.pageSize)), totalRecords:(await Movie.countDocuments())};
           } catch (error) {
             throw new Error(error.message);
           }

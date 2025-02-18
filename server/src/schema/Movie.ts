@@ -3,6 +3,7 @@ import {
     GraphQLID,
     GraphQLString,
     GraphQLInt,
+    GraphQLList,
   } from "graphql";
   
   const MovieType = new GraphQLObjectType({
@@ -15,5 +16,13 @@ import {
       duration: { type: GraphQLString },
     }),
   });
+
+  const MovieTypePaginated = new GraphQLObjectType({
+    name: 'MoviePaginated',
+    fields: () =>  ({
+      data: {type: GraphQLList(MovieType)},
+      totalCount: {type: GraphQLInt}
+    }),
+  })
   
-  export default MovieType;
+  export {MovieType, MovieTypePaginated};
