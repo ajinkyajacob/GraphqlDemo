@@ -4,9 +4,8 @@ import mongoose, { Schema, Document, Types } from "mongoose";
 // Define the interface for User document
 export interface IUser extends Document {
   email: string;
-  username: string;
+  name: string;
   password: string;
-  isAdmin: boolean;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -14,12 +13,11 @@ export interface IUser extends Document {
 // Create a schema for the User model
 const userSchema: Schema<IUser> = new Schema(
   {
+    name: { type: String, required: true },
     email: { type: String, required: true, unique: true },
-    username: { type: String, required: true, unique: true },
     password: { type: String, required: true },
-    isAdmin: { type: Boolean, default: false },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 // Create and export the User model

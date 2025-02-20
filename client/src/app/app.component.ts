@@ -1,19 +1,12 @@
-import { Component, Inject } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
-import { GRAPHQL_BASE_URL } from './app.config';
+import { Component } from "@angular/core";
+import { RouterOutlet } from "@angular/router";
 
 @Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrl: './app.component.css'
+  selector: "app-root",
+  template: ` <router-outlet /> `,
+  styleUrl: "./app.component.css",
+  imports: [RouterOutlet],
 })
 export class AppComponent {
-  title = 'client';
-  constructor(@Inject(GRAPHQL_BASE_URL) url:string ){
-    console.log(url)
-    // console.log(url)
-    // console.log(url)
-    // console.log(url)
-
-  }
+  title = "client";
 }

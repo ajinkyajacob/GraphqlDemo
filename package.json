@@ -7,10 +7,19 @@
     "scripts": {
         "web": "npm run --workspace=client start",
         "backend": "npm run mongo:start & npm run --workspace=server dev",
-        "ruru":"npm run --workspace=server ruru",
+        "ruru": "npm run --workspace=server ruru",
         "mongo": "npm run --workspace=server mongo",
         "mongo:start": "npm run mongo -- up -- -d",
         "mongo:restart": "npm run mongo -- restart",
-        "mongo:stop": "npm run mongo -- stop"
+        "mongo:stop": "npm run mongo -- stop",
+        "lint": "eslint . --ext .ts,.html",
+        "lint:fix": "eslint . --ext .ts,.html --fix",
+        "format": "prettier --write \"src/**/*.{ts,html,scss}\""
+    },
+    "devDependencies": {
+        "@typescript-eslint/parser": "^5.62.0",
+        "eslint": "^8.57.1",
+        "prettier": "^3.5.1",
+        "prettier-eslint": "^16.3.0"
     }
 }

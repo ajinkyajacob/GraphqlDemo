@@ -1,1 +1,81 @@
-/* You can add global styles to this file, and also import other style files */
+@import "tailwindcss";
+/* @import url('../tsconfig.app.json'); */
+/* @config "../tailwind.config.js"; */
+
+/* CSS HEX */
+/* :root{ */
+/* --timberwolf: #dad6d6ff; */
+/* --cambridge-blue: #92bfb1ff; */
+/* --hunyadi-yellow: #f4ac45ff; */
+/* --coffee: #694a38ff; */
+/* --amaranth-purple: #a61c3cff; */
+
+/* CSS HSL */
+/* --timberwolf: hsla(0, 5%, 85%, 1); */
+/* --cambridge-blue: hsla(161, 26%, 66%, 1); */
+/* --hunyadi-yellow: hsla(35, 89%, 61%, 1); */
+/* --coffee: hsla(22, 30%, 32%, 1); */
+/* --amaranth-purple: hsla(346, 71%, 38%, 1); */
+
+/* } */
+
+/* SCSS HEX */
+/* $timberwolf: #dad6d6ff; */
+/* $cambridge-blue: #92bfb1ff; */
+/* $hunyadi-yellow: #f4ac45ff; */
+/* $coffee: #694a38ff; */
+/* $amaranth-purple: #a61c3cff; */
+
+/* SCSS HSL */
+/* $timberwolf: hsla(0, 5%, 85%, 1); */
+/* $cambridge-blue: hsla(161, 26%, 66%, 1); */
+/* $hunyadi-yellow: hsla(35, 89%, 61%, 1); */
+/* $coffee: hsla(22, 30%, 32%, 1); */
+/* $amaranth-purple: hsla(346, 71%, 38%, 1); */
+
+/* SCSS RGB */
+/* $timberwolf: rgba(218, 214, 214, 1); */
+/* $cambridge-blue: rgba(146, 191, 177, 1); */
+/* $hunyadi-yellow: rgba(244, 172, 69, 1); */
+/* $coffee: rgba(105, 74, 56, 1); */
+/* $amaranth-purple: rgba(166, 28, 60, 1); */
+
+/* SCSS Gradient */
+/* $gradient-top: linear-gradient(0deg, #dad6d6ff, #92bfb1ff, #f4ac45ff, #694a38ff, #a61c3cff); */
+/* $gradient-right: linear-gradient(90deg, #dad6d6ff, #92bfb1ff, #f4ac45ff, #694a38ff, #a61c3cff); */
+/* $gradient-bottom: linear-gradient(180deg, #dad6d6ff, #92bfb1ff, #f4ac45ff, #694a38ff, #a61c3cff); */
+/* $gradient-left: linear-gradient(270deg, #dad6d6ff, #92bfb1ff, #f4ac45ff, #694a38ff, #a61c3cff); */
+/* $gradient-top-right: linear-gradient(45deg, #dad6d6ff, #92bfb1ff, #f4ac45ff, #694a38ff, #a61c3cff); */
+/* $gradient-bottom-right: linear-gradient(135deg, #dad6d6ff, #92bfb1ff, #f4ac45ff, #694a38ff, #a61c3cff); */
+/* $gradient-top-left: linear-gradient(225deg, #dad6d6ff, #92bfb1ff, #f4ac45ff, #694a38ff, #a61c3cff); */
+/* $gradient-bottom-left: linear-gradient(315deg, #dad6d6ff, #92bfb1ff, #f4ac45ff, #694a38ff, #a61c3cff); */
+/* $gradient-radial: radial-gradient(#dad6d6ff, #92bfb1ff, #f4ac45ff, #694a38ff, #a61c3cff); */
+
+@theme {
+  --font-sans: "Open Sans", ui-sans-serif, system-ui, sans-serif;
+
+  --color-neutral-50: #f7f7f7;
+  --color-neutral-100: #eeeeee;
+  --color-neutral-200: #e0e0e0;
+  --color-neutral-300: #cacaca;
+  --color-neutral-400: #90bdaf;
+  --color-neutral-500: #999999;
+  --color-neutral-600: #7f7f7f;
+  --color-neutral-700: #676767;
+  --color-neutral-800: #545454;
+  --color-neutral-900: #464646;
+  --color-neutral-950: #282828;
+
+  --color-primary-default: #dad6d6;
+  --color-primary-50: #f8f8f8;
+  --color-primary-100: #f1efef;
+  --color-primary-200: #e5e3e3;
+  --color-primary-300: #dad6d6;
+  --color-primary-400: #b8b1b1;
+  --color-primary-500: #9e9595;
+  --color-primary-600: #867c7c;
+  --color-primary-700: #6f6666;
+  --color-primary-800: #5d5757;
+  --color-primary-900: #514b4b;
+  --color-primary-950: #292626;
+}

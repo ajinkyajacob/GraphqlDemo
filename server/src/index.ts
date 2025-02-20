@@ -14,21 +14,20 @@ app.use(morgan("common"));
 // USE HELMET AND CORS MIDDLEWARES
 app.use(
   cors({
-    origin: ["*"], // Comma separated list of your urls to access your api. * means allow everything
+    origin: true, // Comma separated list of your urls to access your api. * means allow everything
     credentials: true, // Allow cookies to be sent with requests
-  })
+  }),
 );
 app.use(
   helmet({
     contentSecurityPolicy:
       process.env.NODE_ENV === "production" ? undefined : false,
-  })
+  }),
 );
 
 app.use(express.json());
 
 // DB CONNECTION
-console.log(process.env.MONGODB_URL)
 if (!process.env.MONGODB_URL) {
   throw new Error("MONGODB_URL environment variable is not defined");
 }
@@ -45,7 +44,7 @@ app.use(
   graphqlHTTP({
     schema,
     graphiql: true,
-  })
+  }),
 );
 
 // Start backend server
