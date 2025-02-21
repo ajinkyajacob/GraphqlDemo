@@ -6,27 +6,28 @@ import {
   GraphQLString,
   GraphQLInt,
   GraphQLBoolean,
-} from "graphql";
-import UserType from "./User";
-import { MovieType, MovieTypePaginated } from "./Movie";
-import Movie from "../models/Movie";
-import User from "../models/User";
+} from 'graphql';
+import UserType from './User';
+import { MovieType, MovieTypePaginated } from './Movie';
+import Movie from '../models/Movie';
+import User from '../models/User';
 import {
   hashPassword,
   genToken,
   comparePassword,
-} from "../utils/passwordUtils";
+} from '../utils/passwordUtils';
 
 // Queries
 const RootQuery = new GraphQLObjectType({
-  name: "RootQueryType",
+  name: 'RootQueryType',
   fields: {
     // Query to get all users
     users: {
       type: GraphQLList(UserType),
       args: { page: { type: GraphQLInt }, pageSize: { type: GraphQLInt } },
-      resolve: async (_, args) => {
+      resolve: async (_, args, context) => {
         try {
+          console.log(context.user);
           const users = await User.find().skip(args.page).limit(args.limit);
           return users.map((user) => ({
             ...user.toObject(),
@@ -55,7 +56,7 @@ const RootQuery = new GraphQLObjectType({
               updatedAt: user.updatedAt.toISOString(),
             };
           }
-          throw new Error("User is null");
+          throw new Error('User is null');
         } catch (error) {
           throw new Error(error.message);
         }
@@ -67,8 +68,9 @@ const RootQuery = new GraphQLObjectType({
       type: MovieTypePaginated,
       args: { page: { type: GraphQLInt }, pageSize: { type: GraphQLInt } },
 
-      resolve: async (_, args) => {
+      resolve: async (_, args, context) => {
         try {
+          console.log(context.user);
           return {
             data: await Movie.find().skip(args.page).limit(args.pageSize),
             totalRecords: await Movie.countDocuments(),
@@ -96,7 +98,7 @@ const RootQuery = new GraphQLObjectType({
 
 // Mutations
 const Mutation = new GraphQLObjectType({
-  name: "Mutation",
+  name: 'Mutation',
   fields: {
     // Mutation to add a new user
     addUser: {
@@ -141,10 +143,10 @@ const Mutation = new GraphQLObjectType({
       resolve: async (_, args) => {
         try {
           const data = await User.findOne({ email: args.email });
-          if (!data) throw new Error("User not found");
+          if (!data) throw new Error('User not found');
           const { _id: id, name, email, password } = data;
           const valid = await comparePassword(password, args.password);
-          if (!valid) throw new Error("Pasword does not match");
+          if (!valid) throw new Error('Pasword does not match');
           const token = genToken(id as string, email);
           return { id, name, email, jwt: token };
         } catch (error) {
@@ -238,8 +240,7 @@ const Mutation = new GraphQLObjectType({
     },
   },
 });
-
-export default new GraphQLSchema({
+export const schema = new GraphQLSchema({
   query: RootQuery,
   mutation: Mutation,
 });

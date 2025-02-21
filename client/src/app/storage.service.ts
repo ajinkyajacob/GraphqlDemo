@@ -1,7 +1,8 @@
-import { inject, Injectable } from "@angular/core";
+import { inject, Injectable } from '@angular/core';
+import { User } from './services/auth.service';
 
 @Injectable({
-  providedIn: "root",
+  providedIn: 'root',
 })
 class StorageService<T extends Record<string, any> = any> implements Storage {
   get length() {
@@ -31,5 +32,5 @@ class StorageService<T extends Record<string, any> = any> implements Storage {
 }
 
 export function injectStorage() {
-  return inject<StorageService<{ jwt: string }>>(StorageService);
+  return inject<StorageService<User>>(StorageService);
 }
