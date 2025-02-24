@@ -1,0 +1,51 @@
+<div
+  class="bg-white rounded-2xl shadow-xl overflow-hidden transform hover:scale-[1.03] hover:rotate-1 transition-all duration-500 border border-neutral-100 group"
+>
+  <div class="relative">
+    <img
+      [src]="imgUrl()"
+      alt="Movie Poster"
+      class="w-full h-[350px] object-cover group-hover:brightness-110 transition-all duration-500"
+    />
+    <span
+      class="absolute top-4 right-4 bg-primary-600/90 text-white px-3 py-1 rounded-full backdrop-blur-sm animate-pulse"
+      >{{ data().rating }}</span
+    >
+  </div>
+  <div class="p-8">
+    <h3
+      class="text-2xl font-bold mb-3 hover:text-primary-600 transition-colors group-hover:translate-x-2 duration-500"
+    >
+      {{ data().title }}
+    </h3>
+    <div class="flex items-center mb-4 text-neutral-600">
+      <span
+        class="material-symbols-outlined text-primary-500 group-hover:rotate-180 transition-all duration-700"
+        >calendar_month</span
+      >
+      <span
+        class="ml-2 group-hover:translate-x-1 transition-all duration-300"
+        >{{ data().year }}</span
+      >
+      <span class="mx-3 text-neutral-300">|</span>
+      <span
+        class="material-symbols-outlined text-primary-500 group-hover:rotate-180 transition-all duration-700"
+        >schedule</span
+      >
+      <span class="ml-2 group-hover:translate-x-1 transition-all duration-300"
+        >{{ data().time }} min</span
+      >
+    </div>
+    <p
+      class="text-neutral-600 mb-6 line-clamp-3 group-hover:translate-y-1 transition-all duration-500"
+    >
+      {{ data().description }}
+    </p>
+    <button
+      (click)="onViewDetails.emit($event)"
+      class="w-full bg-primary-600 text-white py-3 rounded-xl hover:bg-primary-700 active:bg-primary-800 transition-all duration-300 shadow-lg hover:shadow-primary-500/20 group-hover:scale-105"
+    >
+      View Details
+    </button>
+  </div>
+</div>

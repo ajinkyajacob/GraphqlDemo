@@ -5,7 +5,7 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { first } from 'rxjs';
 import { AuthService } from '../../../services/auth.service';
 
@@ -40,6 +40,7 @@ function confirmPasswordValidator(
 })
 export class RegistrationComponent {
   auth = inject(AuthService);
+  router = inject(Router);
   commmonValidators = [Validators.required];
   form = new FormGroup(
     {
@@ -56,7 +57,9 @@ export class RegistrationComponent {
     if (this.form.valid) {
       const { email, first, last, password } = this.form.value;
       const payload = { email, password, name: `${first} ${last}` };
-      this.auth.register(payload as any).subscribe();
+      this.auth.register(payload as any).subscribe({
+        next: ({ data }) => data && this.router.navigate(['movies']),
+      });
     }
   }
 }

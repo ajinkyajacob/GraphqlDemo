@@ -2,6 +2,7 @@ import { computed, effect, inject, Injectable, signal } from '@angular/core';
 import { Apollo, gql } from 'apollo-angular';
 import { tap } from 'rxjs';
 import { injectStorage } from '../storage.service';
+import { setContext } from '@apollo/client/link/context';
 
 export interface User {
   jwt: string;
@@ -35,7 +36,9 @@ export class AuthService {
 
   register(payload: { email: string; password: string }) {
     return this.apollo
-      .mutate<{ resgister: { jwt: string } }>({
+      .mutate<{
+        addUser: User;
+      }>({
         mutation: gql`
           mutation resgister(
             $email: String!
@@ -53,9 +56,11 @@ export class AuthService {
         variables: payload,
       })
       .pipe(
-        tap(({ data }) =>
-          this.storage.setItem('jwt', data?.resgister.jwt ?? ''),
-        ),
+        tap(({ data }) => {
+          // this.storage.setItem('jwt', data?.resgister.jwt ?? ''),
+          //   this.updateHeader();
+          this.setSessionData(data?.addUser);
+        }),
       );
   }
 
@@ -78,17 +83,39 @@ export class AuthService {
       })
       .pipe(
         tap(({ data, errors }) => {
-          console.log('jwt', data);
-          const jwt = data?.login?.jwt ?? '';
-          const name = data?.login?.name ?? '';
-          const email = data?.login?.email ?? '';
-          const id = data?.login?.id ?? '';
-          this._userData.set({ jwt, name, email, id });
+          this.setSessionData(data?.login);
         }),
       );
   }
 
+  private setSessionData(user: User | null | undefined) {
+    console.log('jwt', user);
+    const jwt = user?.jwt ?? '';
+    const name = user?.name ?? '';
+    const email = user?.email ?? '';
+    const id = user?.id ?? '';
+    this._userData.set({ jwt, name, email, id });
+    // this.updateHeader();
+  }
+
+  updateHeader() {
+    const authLink = setContext((_, { headers }) => {
+      return {
+        headers: {
+          ...headers,
+          authorization: this.token() ? this.token() : '',
+        },
+      };
+    });
+    this.apollo.client.setLink(authLink.concat(this.apollo.client.link));
+  }
+
   logout() {
     this.storage.clear();
+    this.apollo.client.resetStore();
   }
+}
+
+export function injectAuth() {
+  return inject(AuthService);
 }

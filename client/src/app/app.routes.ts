@@ -44,4 +44,9 @@ export const routes: Routes = [
       ),
     canActivate: [() => inject(AuthService).token()],
   },
+  {
+    path: '**',
+    redirectTo: 'login',
+    pathMatch: 'full',
+  },
 ];

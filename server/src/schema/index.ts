@@ -68,12 +68,11 @@ const RootQuery = new GraphQLObjectType({
       type: MovieTypePaginated,
       args: { page: { type: GraphQLInt }, pageSize: { type: GraphQLInt } },
 
-      resolve: async (_, args, context) => {
+      resolve: async (_, args) => {
         try {
-          console.log(context.user);
           return {
             data: await Movie.find().skip(args.page).limit(args.pageSize),
-            totalRecords: await Movie.countDocuments(),
+            totalRecords: await Movie.find().countDocuments(),
           };
         } catch (error) {
           throw new Error(error.message);
@@ -236,6 +235,175 @@ const Mutation = new GraphQLObjectType({
         } catch (error) {
           throw new Error(error.message);
         }
+      },
+    },
+
+    saveMovies: {
+      type: MovieType,
+      resolve: async () => {
+        const data = await Movie.insertMany([
+          {
+            title: 'Avatar',
+            description:
+              'A paraplegic marine dispatched to the moon Pandora on a unique mission becomes torn between following his orders and protecting the world he feels is his home.',
+            imageUrl:
+              'https://images-na.ssl-images-amazon.com/images/M/MV5BMjEyOTYyMzUxNl5BMl5BanBnXkFtZTcwNTg0MTUzNA@@._V1_SX1500_CR0,0,1500,999_AL_.jpg',
+            time: '162 min',
+            year: '2009',
+            rating: '7.9',
+          },
+          {
+            title: 'I Am Legend',
+            description:
+              'Years after a plague kills most of humanity and transforms the rest into monsters, the sole survivor in New York City struggles valiantly to find a cure.',
+            imageUrl:
+              'https://images-na.ssl-images-amazon.com/images/M/MV5BMTI0NTI4NjE3NV5BMl5BanBnXkFtZTYwMDA0Nzc4._V1_.jpg',
+            time: '101 min',
+            year: '2007',
+            rating: '7.2',
+          },
+          {
+            title: '300',
+            description:
+              'King Leonidas of Sparta and a force of 300 men fight the Persians at Thermopylae in 480 B.C.',
+            imageUrl:
+              'https://images-na.ssl-images-amazon.com/images/M/MV5BMTMwNTg5MzMwMV5BMl5BanBnXkFtZTcwMzA2NTIyMw@@._V1_SX1777_CR0,0,1777,937_AL_.jpg',
+            time: '117 min',
+            year: '2006',
+            rating: '7.7',
+          },
+          {
+            title: 'The Avengers',
+            description:
+              "Earth's mightiest heroes must come together and learn to fight as a team if they are to stop the mischievous Loki and his alien army from enslaving humanity.",
+            imageUrl:
+              'https://images-na.ssl-images-amazon.com/images/M/MV5BMTA0NjY0NzE4OTReQTJeQWpwZ15BbWU3MDczODg2Nzc@._V1_SX1777_CR0,0,1777,999_AL_.jpg',
+            time: '143 min',
+            year: '2012',
+            rating: '8.1',
+          },
+          {
+            title: 'The Wolf of Wall Street',
+            description:
+              'Based on the true story of Jordan Belfort, from his rise to a wealthy stock-broker living the high life to his fall involving crime, corruption and the federal government.',
+            imageUrl:
+              'https://images-na.ssl-images-amazon.com/images/M/MV5BNDIwMDIxNzk3Ml5BMl5BanBnXkFtZTgwMTg0MzQ4MDE@._V1_SX1500_CR0,0,1500,999_AL_.jpg',
+            time: '180 min',
+            year: '2013',
+            rating: '8.2',
+          },
+          {
+            title: 'Interstellar',
+            description:
+              "A team of explorers travel through a wormhole in space in an attempt to ensure humanity's survival.",
+            imageUrl:
+              'https://images-na.ssl-images-amazon.com/images/M/MV5BMjA3NTEwOTMxMV5BMl5BanBnXkFtZTgwMjMyODgxMzE@._V1_SX1500_CR0,0,1500,999_AL_.jpg',
+            time: '169 min',
+            year: '2014',
+            rating: '8.6',
+          },
+          {
+            title: 'Game of Thrones',
+            description:
+              'While a civil war brews between several noble families in Westeros, the children of the former rulers of the land attempt to rise up to power. Meanwhile a forgotten race, bent on destruction, plans to return after thousands of years in the North.',
+            imageUrl:
+              'https://images-na.ssl-images-amazon.com/images/M/MV5BNDc1MGUyNzItNWRkOC00MjM1LWJjNjMtZTZlYWIxMGRmYzVlXkEyXkFqcGdeQXVyMzU3MDEyNjk@._V1_SX1777_CR0,0,1777,999_AL_.jpg',
+            time: '56 min',
+            year: '2011–',
+            rating: '9.5',
+          },
+          {
+            title: 'Vikings',
+            description:
+              'The world of the Vikings is brought to life through the journey of Ragnar Lothbrok, the first Viking to emerge from Norse legend and onto the pages of history - a man on the edge of myth.',
+            imageUrl:
+              'https://images-na.ssl-images-amazon.com/images/M/MV5BMjM5MTM1ODUxNV5BMl5BanBnXkFtZTgwNTAzOTI2ODE@._V1_.jpg',
+            time: '44 min',
+            year: '2013–',
+            rating: '8.6',
+          },
+          {
+            title: 'Gotham',
+            description:
+              "The story behind Detective James Gordon's rise to prominence in Gotham City in the years before Batman's arrival.",
+            imageUrl:
+              'https://images-na.ssl-images-amazon.com/images/M/MV5BNDI3ODYyODY4OV5BMl5BanBnXkFtZTgwNjE5NDMwMDI@._V1_SY1000_SX1500_AL_.jpg',
+            time: '42 min',
+            year: '2014–',
+            rating: '8.0',
+          },
+          {
+            title: 'Power',
+            description:
+              'James "Ghost" St. Patrick, a wealthy New York night club owner who has it all, catering for the city\'s elite and dreaming big, lives a double life as a drug kingpin.',
+            imageUrl:
+              'https://images-na.ssl-images-amazon.com/images/M/MV5BMTc2ODg0MzMzM15BMl5BanBnXkFtZTgwODYxODA5NTE@._V1_SY1000_SX1500_AL_.jpg',
+            time: '50 min',
+            year: '2014–',
+            rating: '8.0',
+          },
+          {
+            title: 'Narcos',
+            description:
+              'A chronicled look at the criminal exploits of Colombian drug lord Pablo Escobar.',
+            imageUrl:
+              'https://images-na.ssl-images-amazon.com/images/M/MV5BMTk2MDMzMTc0MF5BMl5BanBnXkFtZTgwMTAyMzA1OTE@._V1_SX1500_CR0,0,1500,999_AL_.jpg',
+            time: '49 min',
+            year: '2015–',
+            rating: '8.9',
+          },
+          {
+            title: 'Breaking Bad',
+            description:
+              "A high school chemistry teacher diagnosed with inoperable lung cancer turns to manufacturing and selling methamphetamine in order to secure his family's financial future.",
+            imageUrl:
+              'https://images-na.ssl-images-amazon.com/images/M/MV5BMTgyMzI5NDc5Nl5BMl5BanBnXkFtZTgwMjM0MTI2MDE@._V1_SY1000_CR0,0,1498,1000_AL_.jpg',
+            time: '49 min',
+            year: '2008–2013',
+            rating: '9.5',
+          },
+          {
+            title: 'Doctor Strange',
+            description:
+              'After his career is destroyed, a brilliant but arrogant and conceited surgeon gets a new lease on life when a sorcerer takes him under her wing and trains him to defend the world against evil.',
+            imageUrl:
+              'https://images-na.ssl-images-amazon.com/images/M/MV5BMjM3ODc1ODI5Ml5BMl5BanBnXkFtZTgwODMzMDY3OTE@._V1_.jpg',
+            time: 'N/A',
+            year: '2016',
+            rating: 'N/A',
+          },
+          {
+            title: 'Rogue One: A Star Wars Story',
+            description:
+              'The Rebellion makes a risky move to steal the plans to the Death Star, setting up the epic saga to follow.',
+            imageUrl:
+              'https://images-na.ssl-images-amazon.com/images/M/MV5BMjE3MzA4Nzk3NV5BMl5BanBnXkFtZTgwNjAxMTc1ODE@._V1_SX1777_CR0,0,1777,744_AL_.jpg',
+            time: 'N/A',
+            year: '2016',
+            rating: 'N/A',
+          },
+          {
+            title: "Assassin's Creed",
+            description:
+              'When Callum Lynch explores the memories of his ancestor Aguilar and gains the skills of a Master Assassin, he discovers he is a descendant of the secret Assassins society.',
+            imageUrl:
+              'https://images-na.ssl-images-amazon.com/images/M/MV5BN2EyYzgyOWEtNTY2NS00NjRjLWJiNDYtMWViMjg5MWZjYjgzXkEyXkFqcGdeQXVyNjUwNzk3NDc@._V1_.jpg',
+            time: 'N/A',
+            year: '2016',
+            rating: 'N/A',
+          },
+          {
+            title: 'Luke Cage',
+            description:
+              'Given superstrength and durability by a sabotaged experiment, a wrongly accused man escapes prison to become a superhero for hire.',
+            imageUrl:
+              'https://images-na.ssl-images-amazon.com/images/M/MV5BMjMxNjc1NjI0NV5BMl5BanBnXkFtZTgwNzA0NzY0ODE@._V1_SY1000_CR0,0,1497,1000_AL_.jpg',
+            time: '55 min',
+            year: '2016–',
+            rating: 'N/A',
+          },
+        ]);
+        return data;
       },
     },
   },

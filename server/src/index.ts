@@ -34,8 +34,8 @@ if (!process.env.MONGODB_URL) {
 }
 
 mongoose
-  .connect(process.env.MONGODB_URL, {})
-  .then(() => {
+  .connect(process.env.MONGODB_URL, { dbName: 'GQ' })
+  .then((x) => {
     console.log('MongoDB connected to the backend successfully');
   })
   .catch((err: Error) => console.log(err));
@@ -43,11 +43,18 @@ mongoose
 app.use(
   '/graphql',
   graphqlHTTP((req, res) => {
-    const user = getUserFromToken(req.headers.authorization);
+    let user = null;
+    const { operationName } = (req as any).body;
+    console.log(
+      operationName,
+      !['login', 'resgister', undefined].includes(operationName),
+    );
+    if (!['login', 'resgister', 'graphql'].includes(operationName))
+      user = getUserFromToken(req.headers.authorization);
     return {
       schema,
       graphiql: true,
-      context: { user },
+      context: { user, req, res },
     };
   }),
 );
