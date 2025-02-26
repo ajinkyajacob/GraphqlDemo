@@ -18,7 +18,11 @@ import { provideApollo } from 'apollo-angular';
 import { HttpLink } from 'apollo-angular/http';
 import { InMemoryCache } from '@apollo/client/core';
 import { environment } from '../environments/environment.development';
-import { injectAuth } from './services/auth.service';
+import {
+  authorizationInterceptor,
+  injectAuth,
+  unAuthorizedInterceptor,
+} from './services/auth.service';
 import { injectStorage } from './storage.service';
 
 export const GRAPHQL_BASE_URL = new InjectionToken<string>('GRAPHQL_BASE_URL');
@@ -32,17 +36,7 @@ export const appConfig: ApplicationConfig = {
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
     provideHttpClient(
-      withInterceptors([
-        (r, n) => {
-          const token = injectAuth().token();
-          console.log(r.body, r.headers.get('authorization'));
-          return n(
-            r.clone({
-              headers: r.headers.set('authorization', token),
-            }),
-          );
-        },
-      ]),
+      withInterceptors([authorizationInterceptor, unAuthorizedInterceptor]),
     ),
     provideAppInitializer(async () => {
       return fetch('./config.json').then(

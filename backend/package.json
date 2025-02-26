@@ -1,0 +1,46 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc",
+    "ruru": "npx ruru -SP -p 4001 -e http://localhost:8500/graphql",
+    "mongo": "cd src && sudo docker-compose ",
+    "compile": "tsc",
+    "dev": "npm run codegen && ts-node-dev --respawn ./src/index.ts",
+    "start": "npm run codegen && npm run compile && nodemon ./dist/index.js",
+    "codegen": "graphql-codegen --config codegen.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "bcrypt": "^5.1.1",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "graphql": "^16.10.0",
+    "graphql-tag": "^2.12.6",
+    "helmet": "^8.0.0",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.10.2",
+    "morgan": "^1.10.0"
+  },
+  "devDependencies": {
+    "@apollo/server": "^4.11.3",
+    "@graphql-codegen/cli": "5.0.5",
+    "@graphql-codegen/typescript": "4.1.5",
+    "@graphql-codegen/typescript-mongodb": "^3.0.0",
+    "@graphql-codegen/typescript-resolvers": "4.4.4",
+    "@types/bcrypt": "^5.0.2",
+    "@types/cors": "^2.8.17",
+    "@types/express": "^5.0.0",
+    "@types/jsonwebtoken": "^9.0.9",
+    "@types/morgan": "^1.9.9",
+    "@types/node": "^22.13.5",
+    "nodemon": "^3.1.9",
+    "ts-node": "^10.9.2",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^5.7.3"
+  }
+}

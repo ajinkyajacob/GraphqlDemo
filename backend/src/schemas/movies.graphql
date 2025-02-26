@@ -1,0 +1,19 @@
+type Movie {
+  id: ID
+  title: String
+  description: String
+  imageUrl: String
+  rating: String
+  time: String
+  year: String
+}
+
+type MoviePaginated {
+  data: [Movie]
+  totalCount: Int
+}
+
+type Query {
+  movies(page: Int!, pageSize: Int!): MoviePaginated
+  movie(id: String): Movie
+}

@@ -2,11 +2,12 @@
     "private": true,
     "workspaces": [
         "client",
-        "server"
+        "server",
+        "backend"
     ],
     "scripts": {
         "web": "npm run --workspace=client start",
-        "backend": "npm run mongo:start & npm run --workspace=server dev",
+        "backend": "npm run mongo:start & npm run --workspace=backend dev",
         "ruru": "npm run --workspace=server ruru",
         "mongo": "npm run --workspace=server mongo",
         "mongo:start": "npm run mongo -- up -- -d",

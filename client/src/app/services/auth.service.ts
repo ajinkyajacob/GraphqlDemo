@@ -1,8 +1,10 @@
 import { computed, effect, inject, Injectable, signal } from '@angular/core';
 import { Apollo, gql } from 'apollo-angular';
-import { tap } from 'rxjs';
+import { catchError, of, tap, throwError } from 'rxjs';
 import { injectStorage } from '../storage.service';
 import { setContext } from '@apollo/client/link/context';
+import { HttpErrorResponse, HttpInterceptorFn } from '@angular/common/http';
+import { Router } from '@angular/router';
 
 export interface User {
   jwt: string;
@@ -119,3 +121,31 @@ export class AuthService {
 export function injectAuth() {
   return inject(AuthService);
 }
+
+export const authorizationInterceptor: HttpInterceptorFn = (r, n) => {
+  const token = injectAuth().token();
+  return n(
+    r.clone({
+      headers: r.headers.set('authorization', token),
+    }),
+  );
+};
+
+export const unAuthorizedInterceptor: HttpInterceptorFn = (r, n) => {
+  const router = inject(Router);
+  const auth = injectAuth();
+  return n(r).pipe(
+    tap({
+      error: (e) => {
+        if (e instanceof HttpErrorResponse) {
+          if (e.status === 401 || e.status === 403) {
+            //navigate /delete cookies or whatever
+            auth.logout();
+            router.navigateByUrl(`/login`);
+            // if you've caught / handled the error, you don't want to rethrow it unless you also want downstream consumers to have to handle it as well.
+          }
+        }
+      },
+    }),
+  );
+};
