@@ -9,6 +9,7 @@ import { rxResource } from '@angular/core/rxjs-interop';
 import { MoviesService } from '../../movies.service';
 import { MovieCardComponent } from './movie-card/movie-card.component';
 import { map } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-movies',
@@ -17,7 +18,13 @@ import { map } from 'rxjs';
     <div class="w-auto p-8 bg-neutral-50">
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         @for (item of data.value(); track $index) {
-          <app-movie-card [data]="item" />
+          <app-movie-card
+            [data]="item"
+            [id]="item.id"
+            (onViewDetails)="
+              router.navigate(['home', 'movies-details', $event])
+            "
+          />
         }
         <!-- <div
           class="bg-white rounded-2xl shadow-xl overflow-hidden transform hover:scale-[1.03] hover:rotate-1 transition-all duration-500 border border-neutral-100 group"
@@ -185,21 +192,7 @@ import { map } from 'rxjs';
 })
 export class MoviesComponent {
   moviesService = inject(MoviesService);
-  // data: {
-  //   title: string;
-  //   year: string;
-  //   time: string;
-  //   description: string;
-  //   imageUrl: string;
-  //   rating: string;
-  // } = {
-  //   title: 'Goalmaal',
-  //   description: 'test',
-  //   imageUrl: '',
-  //   time: '100',
-  //   year: '2009',
-  //   rating: '9.0',
-  // };
+  router = inject(Router);
 
   page = signal({
     page: 0,
@@ -213,11 +206,4 @@ export class MoviesComponent {
         .pipe(map((x) => x.data.movies.data)),
     request: () => this.page(),
   });
-  constructor() {
-    this.moviesService
-      .getMovies({})
-      .pipe(map((x) => x.data.movies.data))
-      .subscribe((x) => console.log(x));
-  }
-  a = this.data.value;
 }

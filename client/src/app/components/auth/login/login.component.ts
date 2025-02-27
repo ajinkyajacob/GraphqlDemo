@@ -30,10 +30,8 @@ export class LoginComponent {
 
   login() {
     if (this.form.valid)
-      this.auth
-        .login(this.form.value as any)
-        .subscribe({
-          next: ({ data }) => data && this.router.navigate(['movies']),
-        });
+      this.auth.login(this.form.value as any).subscribe({
+        next: ({ data }) => data && this.router.navigate(['home']),
+      });
   }
 }

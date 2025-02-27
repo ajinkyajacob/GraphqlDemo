@@ -12,9 +12,9 @@ export const movieQueries: QueryResolvers = {
       throw new Error(error.message);
     }
   },
-  movie: async (_, args, { dataSources: { Movie } }) => {
+  movie: async (_, { id }, { dataSources: { Movie } }) => {
     try {
-      return await Movie.findById(args.id);
+      return await Movie.findById(id);
     } catch (error) {
       throw new Error(error.message);
     }

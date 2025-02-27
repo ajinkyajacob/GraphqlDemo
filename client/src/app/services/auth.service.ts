@@ -114,6 +114,7 @@ export class AuthService {
 
   logout() {
     this.storage.clear();
+    this._userData.set({ email: '', id: '', jwt: '', name: '' });
     this.apollo.client.resetStore();
   }
 }

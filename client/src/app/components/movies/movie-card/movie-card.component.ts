@@ -7,7 +7,9 @@ import { Component, computed, input, output } from '@angular/core';
   styleUrl: './movie-card.component.css',
 })
 export class MovieCardComponent {
+  id = input<string>();
   data = input.required<{
+    id: string;
     title: string;
     year: string;
     time: string;
@@ -20,5 +22,5 @@ export class MovieCardComponent {
     this.data().imageUrl ? this.data().imageUrl : 'svgs/imagePlaceholder.svg',
   );
 
-  onViewDetails = output<MouseEvent>();
+  onViewDetails = output<string>();
 }

@@ -1,4 +1,4 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 /* @import url('../tsconfig.app.json'); */
 /* @config "../tailwind.config.js"; */
 
@@ -52,7 +52,7 @@
 /* $gradient-radial: radial-gradient(#dad6d6ff, #92bfb1ff, #f4ac45ff, #694a38ff, #a61c3cff); */
 
 @theme {
-  --font-sans: "Open Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: 'Open Sans', ui-sans-serif, system-ui, sans-serif;
 
   --color-neutral-50: #f7f7f7;
   --color-neutral-100: #eeeeee;
@@ -79,3 +79,39 @@
   --color-primary-900: #514b4b;
   --color-primary-950: #292626;
 }
+
+/* @keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes fade-out {
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes slide-from-right {
+  from {
+    transform: translateX(30px);
+  }
+}
+
+@keyframes slide-to-left {
+  to {
+    transform: translateX(-30px);
+  }
+}
+
+::view-transition-old(root) {
+  animation:
+    90ms cubic-bezier(0.4, 0, 1, 1) both fade-out,
+    300ms cubic-bezier(0.4, 0, 0.2, 1) both slide-to-left;
+}
+
+::view-transition-new(root) {
+  animation:
+    210ms cubic-bezier(0, 0, 0.2, 1) 90ms both fade-in,
+    300ms cubic-bezier(0.4, 0, 0.2, 1) both slide-from-right;
+} */

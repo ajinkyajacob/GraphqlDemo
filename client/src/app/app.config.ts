@@ -6,10 +6,16 @@ import {
   APP_INITIALIZER,
   provideAppInitializer,
 } from '@angular/core';
-import { provideRouter } from '@angular/router';
+import {
+  provideRouter,
+  ViewTransitionInfo,
+  withComponentInputBinding,
+  withViewTransitions,
+} from '@angular/router';
 
 import { routes } from './app.routes';
 import {
+  HttpClient,
   HttpHeaders,
   provideHttpClient,
   withInterceptors,
@@ -24,6 +30,8 @@ import {
   unAuthorizedInterceptor,
 } from './services/auth.service';
 import { injectStorage } from './storage.service';
+import { map } from 'rxjs';
+import { ViewTransitionService } from './services/view-transition.service';
 
 export const GRAPHQL_BASE_URL = new InjectionToken<string>('GRAPHQL_BASE_URL');
 
@@ -31,14 +39,31 @@ const getEnvDetails = () => {
   return environment.baseUrl;
 };
 
+function onViewTransitionCreated(info: ViewTransitionInfo): void {
+  const viewTransitionService = inject(ViewTransitionService);
+  console.log(info);
+  viewTransitionService.currentTransition.set(info);
+
+  info.transition.finished.finally(() => {
+    viewTransitionService.currentTransition.set(null);
+  });
+}
+
 export const appConfig: ApplicationConfig = {
   providers: [
     provideZoneChangeDetection({ eventCoalescing: true }),
-    provideRouter(routes),
+    provideRouter(
+      routes,
+      withViewTransitions({ onViewTransitionCreated }),
+      withComponentInputBinding(),
+    ),
     provideHttpClient(
       withInterceptors([authorizationInterceptor, unAuthorizedInterceptor]),
     ),
     provideAppInitializer(async () => {
+      // return inject(HttpClient)
+      //   .get<{ graphqlApi: string }>('./config.json')
+      //   .pipe(map((x) => (environment.baseUrl = x.graphqlApi)));
       return fetch('./config.json').then(
         async (x) => (environment.baseUrl = (await x.json()).graphqlApi),
       );

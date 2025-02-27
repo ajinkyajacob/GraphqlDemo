@@ -9,10 +9,11 @@ export class MoviesService {
   apollo = inject(Apollo);
   auth = inject(AuthService);
 
-  getMovies(payload: any) {
+  getMovies(payload: { page: number; pageSize: number }) {
     return this.apollo.watchQuery<{
       movies: {
         data: Array<{
+          id: string;
           title: string;
           description: string;
           imageUrl: string;
@@ -35,6 +36,33 @@ export class MoviesService {
               year
             }
             totalCount
+          }
+        }
+      `,
+      variables: payload,
+      context: { jwt: this.auth.token() },
+    }).valueChanges;
+  }
+
+  getMovieById(payload: { id: string }) {
+    return this.apollo.watchQuery<{
+      movie: {
+        id: string;
+        title: string;
+        description: string;
+        imageUrl: string;
+        time: string;
+        year: string;
+        rating: string;
+      };
+    }>({
+      query: gql`
+        query ($id: String!) {
+          movie(id: $id) {
+            id
+            title
+            rating
+            time
           }
         }
       `,

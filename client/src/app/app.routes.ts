@@ -7,6 +7,7 @@ import {
   UrlTree,
 } from '@angular/router';
 import { AuthService } from './services/auth.service';
+import { ContainerComponent } from './components/container/container.component';
 
 export const routes: Routes = [
   {
@@ -25,7 +26,7 @@ export const routes: Routes = [
         const router = inject(Router);
         return !inject(AuthService).token()
           ? true
-          : router.createUrlTree(['movies']);
+          : router.createUrlTree(['home']);
       },
     ],
   },
@@ -37,13 +38,50 @@ export const routes: Routes = [
       ),
   },
   {
-    path: 'movies',
-    loadComponent: () =>
-      import('./components/movies/movies.component').then(
-        (c) => c.MoviesComponent,
-      ),
+    path: 'home',
+    component: ContainerComponent,
     canActivate: [() => inject(AuthService).token()],
+    canActivateChild: [() => inject(AuthService).token()],
+    children: [
+      {
+        path: '',
+        loadComponent: () =>
+          import('./components/movies/movies.component').then(
+            (c) => c.MoviesComponent,
+          ),
+        canActivate: [() => inject(AuthService).token()],
+      },
+      {
+        path: 'movies-details/:id',
+        loadComponent: () =>
+          import(
+            './components/movies/movie-details/movie-details.component'
+          ).then((c) => c.MovieDetailsComponent),
+        canActivate: [() => inject(AuthService).token()],
+      },
+      {
+        path: '**',
+        redirectTo: '',
+        pathMatch: 'full',
+      },
+    ],
   },
+  // {
+  //   path: 'movies',
+  //   loadComponent: () =>
+  //     import('./components/movies/movies.component').then(
+  //       (c) => c.MoviesComponent,
+  //     ),
+  //   canActivate: [() => inject(AuthService).token()],
+  // },
+  // {
+  //   path: 'movies-details',
+  //   loadComponent: () =>
+  //     import('./components/movies/movie-details/movie-details.component').then(
+  //       (c) => c.MovieDetailsComponent,
+  //     ),
+  //   canActivate: [() => inject(AuthService).token()],
+  // },
   {
     path: '**',
     redirectTo: 'login',
