@@ -2,20 +2,19 @@
     "private": true,
     "workspaces": [
         "client",
-        "server",
         "backend"
     ],
     "scripts": {
         "web": "npm run --workspace=client start",
         "backend": "npm run mongo:start & npm run --workspace=backend dev",
-        "ruru": "npm run --workspace=server ruru",
-        "mongo": "npm run --workspace=server mongo",
+        "ruru": "npm run --workspace=backend ruru",
+        "mongo": "npm run --workspace=backend mongo",
         "mongo:start": "npm run mongo -- up -- -d",
         "mongo:restart": "npm run mongo -- restart",
         "mongo:stop": "npm run mongo -- stop",
         "lint": "eslint . --ext .ts,.html",
         "lint:fix": "eslint . --ext .ts,.html --fix",
-        "format": "prettier --write \"src/**/*.{ts,html,scss}\""
+        "format": "prettier --write \"**/src/**/*.{ts,html,scss}\""
     },
     "devDependencies": {
         "@typescript-eslint/parser": "^5.62.0",
