@@ -6,7 +6,7 @@
     ],
     "scripts": {
         "web": "npm run --workspace=client start",
-        "backend": "npm run mongo:start & npm run --workspace=backend dev",
+        "backend": "npm run mongo:start && npm run --workspace=backend dev",
         "ruru": "npm run --workspace=backend ruru",
         "mongo": "npm run --workspace=backend mongo",
         "mongo:start": "npm run mongo -- up -- -d",
@@ -17,7 +17,8 @@
         "format": "prettier --write \"**/src/**/*.{ts,html,scss}\""
     },
     "devDependencies": {
-        "@typescript-eslint/parser": "^5.62.0",
+        "@typescript-eslint/eslint-plugin": "^8.25.0",
+        "@typescript-eslint/parser": "^8.25.0",
         "eslint": "^8.57.1",
         "prettier": "^3.5.1",
         "prettier-eslint": "^16.3.0"

@@ -6,20 +6,22 @@ import {
   signal,
 } from '@angular/core';
 import { rxResource } from '@angular/core/rxjs-interop';
-import { MoviesService } from '../../movies.service';
+import { injectMoviesService } from '../../movies.service';
 import { MovieCardComponent } from './movie-card/movie-card.component';
 import { map } from 'rxjs';
 import { Router } from '@angular/router';
+import { ViewTransitionDirective } from '../../directives/transition-directive';
 
 @Component({
   selector: 'app-movies',
-  imports: [MovieCardComponent],
+  imports: [MovieCardComponent, ViewTransitionDirective],
   template: `
     <div class="w-auto p-8 bg-neutral-50">
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        @for (item of data.value(); track $index) {
+        @for (item of data.value(); track item.id) {
           <app-movie-card
             [data]="item"
+            appViewTransition="card-image"
             [id]="item.id"
             (onViewDetails)="
               router.navigate(['home', 'movies-details', $event])
@@ -191,7 +193,7 @@ import { Router } from '@angular/router';
   styleUrl: './movies.component.css',
 })
 export class MoviesComponent {
-  moviesService = inject(MoviesService);
+  moviesService = injectMoviesService();
   router = inject(Router);
 
   page = signal({

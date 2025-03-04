@@ -7,7 +7,7 @@ import {
 } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { first } from 'rxjs';
-import { AuthService } from '../../../services/auth.service';
+import { AuthService, injectAuth } from '../../../services/auth.service';
 
 import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
 import { FormErrorComponent } from '../../shared/form-error/form-error.component';
@@ -39,7 +39,7 @@ function confirmPasswordValidator(
   styleUrl: './registration.component.css',
 })
 export class RegistrationComponent {
-  auth = inject(AuthService);
+  auth = injectAuth();
   router = inject(Router);
   commmonValidators = [Validators.required];
   form = new FormGroup(

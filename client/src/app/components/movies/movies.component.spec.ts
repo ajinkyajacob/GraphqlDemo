@@ -1,6 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { MoviesComponent } from './movies.component';
+import { MoviesService } from '../../movies.service';
+import { ApolloTestingModule } from 'apollo-angular/testing';
 
 describe('MoviesComponent', () => {
   let component: MoviesComponent;
@@ -8,7 +10,8 @@ describe('MoviesComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [MoviesComponent],
+      imports: [MoviesComponent, ApolloTestingModule],
+      providers: [MoviesService],
     }).compileComponents();
 
     fixture = TestBed.createComponent(MoviesComponent);

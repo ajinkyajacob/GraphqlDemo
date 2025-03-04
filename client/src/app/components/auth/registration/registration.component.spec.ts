@@ -1,6 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { RegistrationComponent } from './registration.component';
+import { provideRouter } from '@angular/router';
+import { AuthService } from '../../../services/auth.service';
+import { ApolloTestingModule } from 'apollo-angular/testing';
 
 describe('RegistrationComponent', () => {
   let component: RegistrationComponent;
@@ -8,7 +11,8 @@ describe('RegistrationComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [RegistrationComponent],
+      imports: [RegistrationComponent, ApolloTestingModule],
+      providers: [provideRouter([]), AuthService],
     }).compileComponents();
 
     fixture = TestBed.createComponent(RegistrationComponent);

@@ -61,8 +61,11 @@ export class MoviesService {
           movie(id: $id) {
             id
             title
-            rating
+            description
+            imageUrl
             time
+            year
+            rating
           }
         }
       `,
@@ -70,4 +73,8 @@ export class MoviesService {
       context: { jwt: this.auth.token() },
     }).valueChanges;
   }
+}
+
+export function injectMoviesService() {
+  return inject(MoviesService);
 }

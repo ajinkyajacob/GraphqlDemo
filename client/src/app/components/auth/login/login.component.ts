@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { AuthService } from '../../../services/auth.service';
+import { AuthService, injectAuth } from '../../../services/auth.service';
 import {
   FormControl,
   FormGroup,
@@ -26,7 +26,7 @@ export class LoginComponent {
     }),
   });
 
-  auth = inject(AuthService);
+  auth = injectAuth();
 
   login() {
     if (this.form.valid)

@@ -1,13 +1,18 @@
 import { inject } from '@angular/core';
 import {
   Router,
+  RouterFeatures,
   Routes,
   UrlSegment,
   UrlSegmentGroup,
   UrlTree,
+  ViewTransitionInfo,
+  withComponentInputBinding,
+  withViewTransitions,
 } from '@angular/router';
 import { AuthService } from './services/auth.service';
 import { ContainerComponent } from './components/container/container.component';
+import { injectViewTransition } from './services/view-transition.service';
 
 export const routes: Routes = [
   {
@@ -88,3 +93,18 @@ export const routes: Routes = [
     pathMatch: 'full',
   },
 ];
+
+export const routerFeatures: RouterFeatures[] = [
+  withViewTransitions({ onViewTransitionCreated }),
+  withComponentInputBinding(),
+];
+
+function onViewTransitionCreated(info: ViewTransitionInfo): void {
+  const viewTransitionService = injectViewTransition();
+  console.log(info);
+  viewTransitionService.currentTransition.set(info);
+
+  info.transition.finished.finally(() => {
+    viewTransitionService.currentTransition.set(null);
+  });
+}

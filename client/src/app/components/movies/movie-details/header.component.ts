@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { injectAuth } from '../../../services/auth.service';
 
 @Component({
   selector: 'app-header',
@@ -41,16 +42,28 @@ import { RouterLink } from '@angular/router';
             TV Shows
           </button>
           <button
-            class="flex bg-white text-purple-800 px-4 py-2 rounded-full shadow-md transition-all duration-300 transform hover:scale-105 hover:bg-purple-100"
+            (click)="auth.logout()"
+            class="flex bg-transparent hover:bg-white/20 text-white px-4 py-2 rounded-full transition-all duration-300 transform hover:scale-105"
           >
             <span class="material-symbols-outlined align-middle mr-1"
+              >logout</span
+            >
+            Logout
+          </button>
+          <div
+            class="flex bg-white text-purple-800 px-4 py-2 rounded-full shadow-md transition-all duration-300 transform hover:scale-105 hover:bg-purple-100"
+          >
+            <span
+              class="material-symbols-outlined align-middle mr-1 self-center"
               >search</span
             >
-            Search
-          </button>
+            <input type="text" class="border-none outline-none w-full" />
+          </div>
         </div>
       </div>
     </header>
   `,
 })
-export class HeaderComponent {}
+export class HeaderComponent {
+  auth = injectAuth();
+}

@@ -1,7 +1,7 @@
 import { Component, effect, inject, input } from '@angular/core';
 import { HeaderComponent } from './header.component';
 import { rxResource } from '@angular/core/rxjs-interop';
-import { MoviesService } from '../../../movies.service';
+import { injectMoviesService } from '../../../movies.service';
 import { map } from 'rxjs';
 
 /* Don't forget to download the CSS file too
@@ -18,9 +18,9 @@ OR remove the styleUrls if you're already using Tailwind */
               class="absolute inset-0 bg-gradient-to-t from-black to-transparent z-10"
             ></div>
             <img
-              src="https://images.unsplash.com/photo-1626814026160-2237a95fc5a0?ixlib=rb-4.0.3&amp;ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&amp;auto=format&amp;fit=crop&amp;w=1740&amp;q=80"
+              [src]="data.value()?.imageUrl ? data.value()?.imageUrl : ''"
               alt="Movie Banner"
-              class="w-full h-full object-cover object-center transition-transform duration-700 hover:scale-105"
+              class="w-full h-full object-cover object-center transition-transform duration-700 hover:scale-105 banner"
             />
             <div class="absolute bottom-0 left-0 p-8 z-20 w-full">
               <div class="flex items-center space-x-4 mb-2">
@@ -37,7 +37,9 @@ OR remove the styleUrls if you're already using Tailwind */
                   >PG-13</span
                 >
               </div>
-              <h1 class="text-white text-5xl font-bold mb-2">Inception</h1>
+              <h1 class="text-white text-5xl font-bold mb-2">
+                {{ data.value()?.title }}
+              </h1>
               <p class="text-gray-300 text-xl">
                 2010 • Action, Sci-Fi, Thriller • 2h 28m
               </p>
@@ -61,13 +63,7 @@ OR remove the styleUrls if you're already using Tailwind */
             <div class="col-span-2">
               <h2 class="text-2xl font-bold mb-4">Overview</h2>
               <p class="text-gray-700 mb-6">
-                Dom Cobb is a skilled thief, the absolute best in the dangerous
-                art of extraction, stealing valuable secrets from deep within
-                the subconscious during the dream state, when the mind is at its
-                most vulnerable. Cobb&#x27;s rare ability has made him a coveted
-                player in this treacherous new world of corporate espionage, but
-                it has also made him an international fugitive and cost him
-                everything he has ever loved.
+                {{ data.value()?.description }}
               </p>
               <div class="mb-8">
                 <h2 class="text-2xl font-bold mb-4">Cast &amp; Crew</h2>
@@ -566,11 +562,18 @@ OR remove the styleUrls if you're already using Tailwind */
       </footer>
     </div>
   `,
+  styles: [
+    `
+      .banner {
+        view-transition-name: card-image;
+      }
+    `,
+  ],
 })
 export class MovieDetailsComponent {
   id = input.required<string>();
 
-  moviesService = inject(MoviesService);
+  moviesService = injectMoviesService();
 
   data = rxResource({
     loader: ({ request }) =>

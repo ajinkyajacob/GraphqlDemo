@@ -4,7 +4,9 @@ import { User } from './services/auth.service';
 @Injectable({
   providedIn: 'root',
 })
-class StorageService<T extends Record<string, any> = any> implements Storage {
+export class StorageService<T extends Record<string, any> = any>
+  implements Storage
+{
   get length() {
     return localStorage.length;
   }

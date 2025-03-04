@@ -7,7 +7,6 @@ import { Component, computed, input, output } from '@angular/core';
   styleUrl: './movie-card.component.css',
 })
 export class MovieCardComponent {
-  id = input<string>();
   data = input.required<{
     id: string;
     title: string;
