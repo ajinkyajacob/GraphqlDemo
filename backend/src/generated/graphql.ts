@@ -22,6 +22,7 @@ export type Movie = {
   description?: Maybe<Scalars['String']['output']>;
   id?: Maybe<Scalars['ID']['output']>;
   imageUrl?: Maybe<Scalars['String']['output']>;
+  omdb?: Maybe<Omdb>;
   rating?: Maybe<Scalars['String']['output']>;
   time?: Maybe<Scalars['String']['output']>;
   title?: Maybe<Scalars['String']['output']>;
@@ -31,7 +32,7 @@ export type Movie = {
 export type MoviePaginated = {
   __typename?: 'MoviePaginated';
   data?: Maybe<Array<Maybe<Movie>>>;
-  totalCount?: Maybe<Scalars['Int']['output']>;
+  totalRecords?: Maybe<Scalars['Int']['output']>;
 };
 
 export type Mutation = {
@@ -53,6 +54,35 @@ export type MutationLoginArgs = {
   password: Scalars['String']['input'];
 };
 
+export type Omdb = {
+  __typename?: 'OMDB';
+  Actors?: Maybe<Scalars['String']['output']>;
+  Awards?: Maybe<Scalars['String']['output']>;
+  BoxOffice?: Maybe<Scalars['String']['output']>;
+  Country?: Maybe<Scalars['String']['output']>;
+  DVD?: Maybe<Scalars['String']['output']>;
+  Director?: Maybe<Scalars['String']['output']>;
+  Genre?: Maybe<Scalars['String']['output']>;
+  Language?: Maybe<Scalars['String']['output']>;
+  Metascore?: Maybe<Scalars['String']['output']>;
+  Plot?: Maybe<Scalars['String']['output']>;
+  Poster?: Maybe<Scalars['String']['output']>;
+  Production?: Maybe<Scalars['String']['output']>;
+  Rated?: Maybe<Scalars['String']['output']>;
+  Ratings?: Maybe<Array<Maybe<Ratings>>>;
+  Released?: Maybe<Scalars['String']['output']>;
+  Response?: Maybe<Scalars['String']['output']>;
+  Runtime?: Maybe<Scalars['String']['output']>;
+  Title?: Maybe<Scalars['String']['output']>;
+  Type?: Maybe<Scalars['String']['output']>;
+  Website?: Maybe<Scalars['String']['output']>;
+  Writer?: Maybe<Scalars['String']['output']>;
+  Year?: Maybe<Scalars['String']['output']>;
+  imdbID?: Maybe<Scalars['String']['output']>;
+  imdbRating?: Maybe<Scalars['String']['output']>;
+  imdbVotes?: Maybe<Scalars['String']['output']>;
+};
+
 export type Query = {
   __typename?: 'Query';
   movie?: Maybe<Movie>;
@@ -68,6 +98,12 @@ export type QueryMovieArgs = {
 export type QueryMoviesArgs = {
   page: Scalars['Int']['input'];
   pageSize: Scalars['Int']['input'];
+};
+
+export type Ratings = {
+  __typename?: 'Ratings';
+  Source?: Maybe<Scalars['String']['output']>;
+  Value?: Maybe<Scalars['String']['output']>;
 };
 
 export type User = {
@@ -162,7 +198,9 @@ export type ResolversTypes = {
   MoviePaginated: ResolverTypeWrapper<MoviePaginated>;
   Int: ResolverTypeWrapper<Scalars['Int']['output']>;
   Mutation: ResolverTypeWrapper<{}>;
+  OMDB: ResolverTypeWrapper<Omdb>;
   Query: ResolverTypeWrapper<{}>;
+  Ratings: ResolverTypeWrapper<Ratings>;
   User: ResolverTypeWrapper<User>;
   AdditionalEntityFields: AdditionalEntityFields;
   Boolean: ResolverTypeWrapper<Scalars['Boolean']['output']>;
@@ -176,7 +214,9 @@ export type ResolversParentTypes = {
   MoviePaginated: MoviePaginated;
   Int: Scalars['Int']['output'];
   Mutation: {};
+  OMDB: Omdb;
   Query: {};
+  Ratings: Ratings;
   User: User;
   AdditionalEntityFields: AdditionalEntityFields;
   Boolean: Scalars['Boolean']['output'];
@@ -233,6 +273,7 @@ export type MovieResolvers<ContextType = MyContext, ParentType extends Resolvers
   description?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   id?: Resolver<Maybe<ResolversTypes['ID']>, ParentType, ContextType>;
   imageUrl?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  omdb?: Resolver<Maybe<ResolversTypes['OMDB']>, ParentType, ContextType>;
   rating?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   time?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   title?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
@@ -242,7 +283,7 @@ export type MovieResolvers<ContextType = MyContext, ParentType extends Resolvers
 
 export type MoviePaginatedResolvers<ContextType = MyContext, ParentType extends ResolversParentTypes['MoviePaginated'] = ResolversParentTypes['MoviePaginated']> = {
   data?: Resolver<Maybe<Array<Maybe<ResolversTypes['Movie']>>>, ParentType, ContextType>;
-  totalCount?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  totalRecords?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -251,9 +292,44 @@ export type MutationResolvers<ContextType = MyContext, ParentType extends Resolv
   login?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType, RequireFields<MutationLoginArgs, 'email' | 'password'>>;
 };
 
+export type OmdbResolvers<ContextType = MyContext, ParentType extends ResolversParentTypes['OMDB'] = ResolversParentTypes['OMDB']> = {
+  Actors?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  Awards?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  BoxOffice?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  Country?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  DVD?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  Director?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  Genre?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  Language?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  Metascore?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  Plot?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  Poster?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  Production?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  Rated?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  Ratings?: Resolver<Maybe<Array<Maybe<ResolversTypes['Ratings']>>>, ParentType, ContextType>;
+  Released?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  Response?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  Runtime?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  Title?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  Type?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  Website?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  Writer?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  Year?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  imdbID?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  imdbRating?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  imdbVotes?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
 export type QueryResolvers<ContextType = MyContext, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
   movie?: Resolver<Maybe<ResolversTypes['Movie']>, ParentType, ContextType, Partial<QueryMovieArgs>>;
   movies?: Resolver<Maybe<ResolversTypes['MoviePaginated']>, ParentType, ContextType, RequireFields<QueryMoviesArgs, 'page' | 'pageSize'>>;
+};
+
+export type RatingsResolvers<ContextType = MyContext, ParentType extends ResolversParentTypes['Ratings'] = ResolversParentTypes['Ratings']> = {
+  Source?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  Value?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
 export type UserResolvers<ContextType = MyContext, ParentType extends ResolversParentTypes['User'] = ResolversParentTypes['User']> = {
@@ -270,7 +346,9 @@ export type Resolvers<ContextType = MyContext> = {
   Movie?: MovieResolvers<ContextType>;
   MoviePaginated?: MoviePaginatedResolvers<ContextType>;
   Mutation?: MutationResolvers<ContextType>;
+  OMDB?: OmdbResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
+  Ratings?: RatingsResolvers<ContextType>;
   User?: UserResolvers<ContextType>;
 };
 

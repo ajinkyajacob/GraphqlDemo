@@ -12,6 +12,7 @@ import { AuthService, injectAuth } from '../../../services/auth.service';
 import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
 import { FormErrorComponent } from '../../shared/form-error/form-error.component';
 import { JsonPipe } from '@angular/common';
+import { TextControlComponent } from '../../shared/text-control/text-control.component';
 
 function confirmPasswordValidator(
   passwordField: string,
@@ -34,7 +35,7 @@ function confirmPasswordValidator(
 
 @Component({
   selector: 'app-registration',
-  imports: [RouterLink, ReactiveFormsModule, FormErrorComponent],
+  imports: [RouterLink, ReactiveFormsModule, TextControlComponent],
   templateUrl: './registration.component.html',
   styleUrl: './registration.component.css',
 })

@@ -1,4 +1,5 @@
 import {
+  AfterViewInit,
   Component,
   computed,
   effect,
@@ -7,55 +8,53 @@ import {
   Signal,
   signal,
 } from '@angular/core';
-import { toSignal } from '@angular/core/rxjs-interop';
-import { FormControl, ValidationErrors } from '@angular/forms';
-import { Observable } from 'rxjs';
+import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-form-error',
   imports: [],
   template: `
-    @for (item of errorsArr(); track $index) {
-      <div>
-        {{ item }}
+    @if (hide()) {
+      <div class="w-full text-sm text-red-600">
+        @for (item of errorsArr(); track $index) {
+          <div>
+            {{ item }}
+          </div>
+        }
       </div>
     }
   `,
   styleUrl: './form-error.component.css',
-  host: {
-    class: 'w-full text-sm text-red-600',
-    '[style.display]]': 'hide()',
-  },
 })
-export class FormErrorComponent {
+export class FormErrorComponent implements AfterViewInit {
   control = input.required<FormControl>();
   value = signal<any>(null);
-  // valueChanges = toSignal(this.value());
   error = computed(() => {
+    this.value();
     return this.control().errors;
   });
   hide = computed(() => {
-    console.log(this.errorsArr());
-    return this.control().touched && this.errorsArr().length !== 0;
+    this.value();
+    return this.control().dirty && this.errorsArr().length !== 0;
   });
-  eh = effect(() => console.log(this.hide()));
   errorsArr = computed(() => {
     const errorObj = this.error();
     if (errorObj) {
       return Object.keys(errorObj).map(
-        (key) => message[key] ?? 'Error msg not defined',
+        (key) => message[key]() ?? 'Error msg not defined',
       );
     } else {
       return [];
     }
   });
 
-  constructor() {
-    // this.control().valueChanges.subscribe((x) => this.value.set(x));
+  constructor() {}
+  ngAfterViewInit(): void {
+    this.control().valueChanges.subscribe((x) => this.value.set(x));
   }
 }
 
-const message: Record<string, string> = {
-  required: 'filed required',
-  confirmPasswordMismatch: 'Passwords do not match.',
+const message: Record<string, () => string> = {
+  required: () => 'filed required',
+  confirmPasswordMismatch: () => 'Passwords do not match.',
 };

@@ -6,6 +6,7 @@
     ],
     "scripts": {
         "web": "npm run --workspace=client start",
+        "test": "npm run --workspace=client test",
         "backend": "npm run mongo:start && npm run --workspace=backend dev",
         "ruru": "npm run --workspace=backend ruru",
         "mongo": "npm run --workspace=backend mongo",

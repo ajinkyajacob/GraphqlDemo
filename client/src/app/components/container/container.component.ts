@@ -6,7 +6,7 @@ import { HeaderComponent } from '../movies/movie-details/header.component';
   selector: 'app-container',
   imports: [RouterOutlet, HeaderComponent],
   template: `
-    <div class="w-auto  bg-neutral-50">
+    <div class="w-auto bg-neutral-50">
       <app-header />
       <router-outlet />
     </div>

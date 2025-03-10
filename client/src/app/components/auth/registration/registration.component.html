@@ -9,45 +9,29 @@
       <h2 class="text-2xl font-bold mb-6 text-neutral-900">Register</h2>
       <form [formGroup]="form" class="space-y-4" (ngSubmit)="register()">
         <div class="grid grid-cols-2 gap-4">
-          <div>
-            <input
-              class="w-full px-4 py-2 rounded-lg border border-neutral-300 focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none transition-all"
-              [formControl]="form.controls.first"
-              type="text"
-              placeholder="First Name"
-            />
-            @if (form.controls.first; as control) {
-              <app-form-error
-                class="pl-2 pt-1"
-                [control]="control"
-              ></app-form-error>
-            }
-          </div>
-          <input
-            [formControl]="form.controls.last"
-            type="text"
+          <app-text-control
+            [control]="form.controls.first"
+            placeholder="First Name"
+          ></app-text-control>
+
+          <app-text-control
+            [control]="form.controls.last"
             placeholder="Last Name"
-            class="px-4 py-2 rounded-lg border border-neutral-300 focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none transition-all"
-          />
+          ></app-text-control>
         </div>
-        <input
-          [formControl]="form.controls.email"
-          type="email"
+
+        <app-text-control
+          [control]="form.controls.email"
           placeholder="Email"
-          class="w-full px-4 py-2 rounded-lg border border-neutral-300 focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none transition-all"
-        />
-        <input
-          [formControl]="form.controls.password"
-          type="password"
+        ></app-text-control>
+        <app-text-control
+          [control]="form.controls.password"
           placeholder="Password"
-          class="w-full px-4 py-2 rounded-lg border border-neutral-300 focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none transition-all"
-        />
-        <input
-          [formControl]="form.controls.confirmPassword"
-          type="password"
+        ></app-text-control>
+        <app-text-control
+          [control]="form.controls.confirmPassword"
           placeholder="Confirm Password"
-          class="w-full px-4 py-2 rounded-lg border border-neutral-300 focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none transition-all"
-        />
+        ></app-text-control>
         <div class="flex items-center space-x-2">
           <input
             type="checkbox"

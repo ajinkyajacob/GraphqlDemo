@@ -42,7 +42,7 @@ export class AuthService {
         addUser: User;
       }>({
         mutation: gql`
-          mutation resgister(
+          mutation register(
             $email: String!
             $password: String!
             $name: String!

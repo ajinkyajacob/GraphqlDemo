@@ -21,6 +21,7 @@ export class MoviesService {
           year: string;
           rating: string;
         }>;
+        totalRecords: number;
       };
     }>({
       query: gql`
@@ -35,7 +36,7 @@ export class MoviesService {
               time
               year
             }
-            totalCount
+            totalRecords
           }
         }
       `,
@@ -66,6 +67,25 @@ export class MoviesService {
             time
             year
             rating
+            omdb {
+              Awards
+              Actors
+              Country
+              Director
+              Genre
+              Language
+              Metascore
+              Plot
+              Poster
+              Production
+              Rated
+              Ratings {
+                Source
+                Value
+              }
+              Rated
+              Year
+            }
           }
         }
       `,

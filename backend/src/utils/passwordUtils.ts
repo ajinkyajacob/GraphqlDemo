@@ -1,6 +1,7 @@
 import { hash, compare } from 'bcrypt';
 import { GraphQLError } from 'graphql';
 import { sign, verify } from 'jsonwebtoken';
+import { IOMDB } from '../models/Movie';
 
 // Hash a password
 export const hashPassword = async (password: string): Promise<string> => {
@@ -30,4 +31,14 @@ export const getUserFromToken = (token: string | undefined) => {
 
 export const comparePassword = async (dbPass: string, userPass: string) => {
   return await compare(userPass, dbPass);
+};
+
+export const getOMDBData = (title: string) => {
+  try {
+    const url = `${process.env.OMDB_URL}&t=${title}`;
+    return fetch(url).then((x) => x.json() as Promise<IOMDB>);
+  } catch (error) {
+    console.log(error);
+    return null;
+  }
 };

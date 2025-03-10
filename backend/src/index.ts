@@ -1,7 +1,7 @@
 import { ApolloServer } from '@apollo/server';
 import { expressMiddleware } from '@apollo/server/express4';
 import { ApolloServerPluginDrainHttpServer } from '@apollo/server/plugin/drainHttpServer';
-import express from 'express';
+import express, { RequestHandler } from 'express';
 import http from 'http';
 import { typeDefs } from './schemas/schema';
 import { resolvers } from './resolvers/index.resolver';
@@ -30,6 +30,10 @@ async function init() {
     resolvers,
     plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
   });
+  // OMDB_URL CONNECTION
+  if (!process.env.OMDB_URL) {
+    throw new Error('OMDB_URL environment variable is not defined');
+  }
 
   // DB CONNECTION
   if (!process.env.MONGODB_URL) {
@@ -45,7 +49,16 @@ async function init() {
 
   await server.start();
 
-  app.use(morgan('common'));
+  app.use(
+    morgan(
+      ':remote-addr - :remote-user :method :url  :status :res[content-length] :referrer :response-time ms',
+      {
+        stream: {
+          write: (message) => console.log(message.trim()),
+        },
+      },
+    ),
+  );
 
   // USE HELMET AND CORS MIDDLEWARES
   app.use(
@@ -86,9 +99,9 @@ async function init() {
         return {
           user,
           dataSources: { Movie, User, mongoose },
-        } as any as MyContext;
+        } as unknown as MyContext;
       },
-    }) as any,
+    }) as unknown as RequestHandler,
   );
   const port = process.env.PORT || 8500;
   await new Promise<void>((resolve) => httpServer.listen({ port }, resolve));
