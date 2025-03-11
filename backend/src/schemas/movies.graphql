@@ -49,5 +49,7 @@ type MoviePaginated {
 
 type Query {
   movies(page: Int!, pageSize: Int!): MoviePaginated
-  movie(id: String): Movie
+  movie(id: ID): Movie
+  getOmdbById(id: ID): OMDB
+  getAllOmdb: [OMDB]
 }

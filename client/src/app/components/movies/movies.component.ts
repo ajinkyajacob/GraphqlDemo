@@ -6,7 +6,7 @@ import {
   signal,
 } from '@angular/core';
 import { rxResource } from '@angular/core/rxjs-interop';
-import { injectMoviesService } from '../../movies.service';
+import { injectMoviesService } from '../../services/movies.service';
 import { MovieCardComponent } from './movie-card/movie-card.component';
 import { map } from 'rxjs';
 import { Router } from '@angular/router';
@@ -18,15 +18,17 @@ import { ViewTransitionDirective } from '../../directives/transition-directive';
   template: `
     <div class="w-auto p-8 bg-neutral-50">
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        @for (item of data.value(); track item.id) {
-          <app-movie-card
-            [data]="item"
-            appViewTransition="card-image"
-            [id]="item.id"
-            (onViewDetails)="
-              router.navigate(['home', 'movies-details', $event])
-            "
-          />
+        @for (item of data.value(); track item?.id ?? $index) {
+          @if (item && item.id) {
+            <app-movie-card
+              [data]="item"
+              appViewTransition="card-image"
+              [id]="item.id"
+              (onViewDetails)="
+                router.navigate(['home', 'movies-details', $event])
+              "
+            />
+          }
         }
         <!-- <div
           class="bg-white rounded-2xl shadow-xl overflow-hidden transform hover:scale-[1.03] hover:rotate-1 transition-all duration-500 border border-neutral-100 group"
@@ -208,4 +210,8 @@ export class MoviesComponent {
         .pipe(map((x) => x.data.movies.data)),
     request: () => this.page(),
   });
+
+  constructor() {
+    const r = new ResizeObserver(() => {});
+  }
 }

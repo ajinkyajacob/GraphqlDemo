@@ -7,9 +7,10 @@
     "ruru": "npx ruru -SP -p 4001 -e http://localhost:8500/graphql",
     "mongo": "cd src && sudo docker-compose ",
     "compile": "tsc",
-    "dev": "npm run codegen && ts-node-dev --respawn ./src/index.ts",
+    "dev": "npm run codegen && npm run codegen-client && ts-node-dev --respawn ./src/index.ts",
     "start": "npm run codegen && npm run compile && nodemon ./dist/index.js",
-    "codegen": "graphql-codegen --config codegen.ts"
+    "codegen": "graphql-codegen --config codegen.ts",
+    "codegen-client": "graphql-codegen --config codegen.client.ts"
   },
   "keywords": [],
   "author": "",

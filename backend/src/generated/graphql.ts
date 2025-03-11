@@ -85,13 +85,20 @@ export type Omdb = {
 
 export type Query = {
   __typename?: 'Query';
+  getAllOmdb?: Maybe<Array<Maybe<Omdb>>>;
+  getOmdbById?: Maybe<Omdb>;
   movie?: Maybe<Movie>;
   movies?: Maybe<MoviePaginated>;
 };
 
 
+export type QueryGetOmdbByIdArgs = {
+  id?: InputMaybe<Scalars['ID']['input']>;
+};
+
+
 export type QueryMovieArgs = {
-  id?: InputMaybe<Scalars['String']['input']>;
+  id?: InputMaybe<Scalars['ID']['input']>;
 };
 
 
@@ -322,6 +329,8 @@ export type OmdbResolvers<ContextType = MyContext, ParentType extends ResolversP
 };
 
 export type QueryResolvers<ContextType = MyContext, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
+  getAllOmdb?: Resolver<Maybe<Array<Maybe<ResolversTypes['OMDB']>>>, ParentType, ContextType>;
+  getOmdbById?: Resolver<Maybe<ResolversTypes['OMDB']>, ParentType, ContextType, Partial<QueryGetOmdbByIdArgs>>;
   movie?: Resolver<Maybe<ResolversTypes['Movie']>, ParentType, ContextType, Partial<QueryMovieArgs>>;
   movies?: Resolver<Maybe<ResolversTypes['MoviePaginated']>, ParentType, ContextType, RequireFields<QueryMoviesArgs, 'page' | 'pageSize'>>;
 };

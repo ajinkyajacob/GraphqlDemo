@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { MoviesComponent } from './movies.component';
-import { MoviesService } from '../../movies.service';
+import { MoviesService } from '../../services/movies.service';
 import { ApolloTestingModule } from 'apollo-angular/testing';
 
 describe('MoviesComponent', () => {

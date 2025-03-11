@@ -1,8 +1,9 @@
-import { Component, effect, inject, input } from '@angular/core';
+import { Component, computed, effect, inject, input } from '@angular/core';
 import { HeaderComponent } from './header.component';
 import { rxResource } from '@angular/core/rxjs-interop';
-import { injectMoviesService } from '../../../movies.service';
+import { injectMoviesService } from '../../../services/movies.service';
 import { map } from 'rxjs';
+import { MovieCastComponent } from './movie-cast/movie-cast.component';
 
 /* Don't forget to download the CSS file too
 OR remove the styleUrls if you're already using Tailwind */
@@ -65,55 +66,7 @@ OR remove the styleUrls if you're already using Tailwind */
               <p class="text-gray-700 mb-6">
                 {{ data.value()?.description }}
               </p>
-              <div class="mb-8">
-                <h2 class="text-2xl font-bold mb-4">Cast &amp; Crew</h2>
-                <div class="grid grid-cols-4 gap-4">
-                  <div
-                    class="bg-gray-50 rounded-lg p-3 hover:shadow-md transition-all duration-300 hover:scale-105 group"
-                  >
-                    <img
-                      src="https://randomuser.me/api/portraits/men/40.jpg"
-                      alt="Leonardo DiCaprio"
-                      class="w-full h-40 object-cover rounded-md mb-2 group-hover:brightness-110"
-                    />
-                    <h3 class="font-bold">Leonardo DiCaprio</h3>
-                    <p class="text-gray-600 text-sm">Dom Cobb</p>
-                  </div>
-                  <div
-                    class="bg-gray-50 rounded-lg p-3 hover:shadow-md transition-all duration-300 hover:scale-105 group"
-                  >
-                    <img
-                      src="https://randomuser.me/api/portraits/men/32.jpg"
-                      alt="Joseph Gordon-Levitt"
-                      class="w-full h-40 object-cover rounded-md mb-2 group-hover:brightness-110"
-                    />
-                    <h3 class="font-bold">Joseph Gordon-Levitt</h3>
-                    <p class="text-gray-600 text-sm">Arthur</p>
-                  </div>
-                  <div
-                    class="bg-gray-50 rounded-lg p-3 hover:shadow-md transition-all duration-300 hover:scale-105 group"
-                  >
-                    <img
-                      src="https://randomuser.me/api/portraits/women/44.jpg"
-                      alt="Ellen Page"
-                      class="w-full h-40 object-cover rounded-md mb-2 group-hover:brightness-110"
-                    />
-                    <h3 class="font-bold">Ellen Page</h3>
-                    <p class="text-gray-600 text-sm">Ariadne</p>
-                  </div>
-                  <div
-                    class="bg-gray-50 rounded-lg p-3 hover:shadow-md transition-all duration-300 hover:scale-105 group"
-                  >
-                    <img
-                      src="https://randomuser.me/api/portraits/men/36.jpg"
-                      alt="Tom Hardy"
-                      class="w-full h-40 object-cover rounded-md mb-2 group-hover:brightness-110"
-                    />
-                    <h3 class="font-bold">Tom Hardy</h3>
-                    <p class="text-gray-600 text-sm">Eames</p>
-                  </div>
-                </div>
-              </div>
+              <app-movie-cast [castNames]="actors()" />
               <div class="mb-8">
                 <h2 class="text-2xl font-bold mb-4">User Reviews</h2>
                 <div
@@ -569,6 +522,7 @@ OR remove the styleUrls if you're already using Tailwind */
       }
     `,
   ],
+  imports: [MovieCastComponent],
 })
 export class MovieDetailsComponent {
   id = input.required<string>();
@@ -582,6 +536,8 @@ export class MovieDetailsComponent {
         .pipe(map((x) => x.data.movie)),
     request: () => this.id(),
   });
+
+  actors = computed(() => this.data.value()?.omdb?.Actors?.split(', ') ?? []);
 
   ef = effect(() => console.log(this.data.value()));
 }

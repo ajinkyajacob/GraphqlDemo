@@ -17,7 +17,7 @@ export const userMutations: MutationResolvers = {
             http: { status: 401 },
           },
         });
-      const { _id: id, name, email, password } = data;
+      const { _id: id, name, email, password, createdAt, updatedAt } = data;
       const valid = await comparePassword(password, args.password);
       if (!valid)
         throw new GraphQLError('Pasword does not match', {
@@ -27,7 +27,14 @@ export const userMutations: MutationResolvers = {
           },
         });
       const token = genToken(id as string, email);
-      return { id: id as string, name, email, jwt: token };
+      return {
+        id: id as string,
+        name,
+        email,
+        jwt: token,
+        // createdAt,
+        // updatedAt,
+      };
     } catch (error) {
       throw new GraphQLError(error.message, {
         extensions: {

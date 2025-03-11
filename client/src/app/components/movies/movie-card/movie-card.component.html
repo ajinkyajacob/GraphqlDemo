@@ -41,11 +41,13 @@
     >
       {{ data().description }}
     </p>
-    <button
-      (click)="onViewDetails.emit(data().id)"
-      class="w-full bg-primary-600 text-white py-3 rounded-xl hover:bg-primary-700 active:bg-primary-800 transition-all duration-300 shadow-lg hover:shadow-primary-500/20 group-hover:scale-105"
-    >
-      View Details
-    </button>
+    @if (data().id; as id) {
+      <button
+        (click)="onViewDetails.emit(id)"
+        class="w-full bg-primary-600 text-white py-3 rounded-xl hover:bg-primary-700 active:bg-primary-800 transition-all duration-300 shadow-lg hover:shadow-primary-500/20 group-hover:scale-105"
+      >
+        View Details
+      </button>
+    }
   </div>
 </div>

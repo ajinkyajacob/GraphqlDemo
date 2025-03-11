@@ -7,6 +7,7 @@ import {
   provideAppInitializer,
   EnvironmentProviders,
   makeEnvironmentProviders,
+  isDevMode,
 } from '@angular/core';
 import { provideRouter } from '@angular/router';
 
@@ -21,6 +22,7 @@ import {
   unAuthorizedInterceptor,
 } from './services/auth.service';
 import { injectStorage } from './storage.service';
+import { provideServiceWorker } from '@angular/service-worker';
 
 export const GRAPHQL_BASE_URL = new InjectionToken<string>('GRAPHQL_BASE_URL');
 
@@ -63,5 +65,9 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(
       withInterceptors([authorizationInterceptor, unAuthorizedInterceptor]),
     ),
+    provideServiceWorker('ngsw-worker.js', {
+      enabled: !isDevMode(),
+      registrationStrategy: 'registerWhenStable:30000',
+    }),
   ],
 };

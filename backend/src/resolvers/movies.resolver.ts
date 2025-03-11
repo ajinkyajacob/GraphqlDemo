@@ -1,6 +1,12 @@
 import { getOMDBData } from '../utils/passwordUtils';
-import { MutationResolvers } from '../generated/graphql';
+import {
+  MutationResolvers,
+  Omdb,
+  Resolver,
+  ResolverTypeWrapper,
+} from '../generated/graphql';
 import { QueryResolvers } from '../generated/graphql';
+import { IOMDB, Movie } from '../models/Movie';
 
 export const movieQueries: QueryResolvers = {
   movies: async (_, { page, pageSize }, { dataSources: { Movie } }) => {
@@ -30,4 +36,25 @@ export const movieQueries: QueryResolvers = {
       throw new Error(error.message);
     }
   },
+  getAllOmdb: async (_, __, { dataSources: { Movie } }) => {
+    try {
+      const omdb = await Movie.aggregate<Omdb>()
+        .match({ omdb: { $exists: true } })
+        .project({ omdb: 1, _id: 0 })
+        .replaceRoot('$omdb');
+      return omdb;
+    } catch (error) {
+      throw new Error(error.message);
+    }
+  },
+  getOmdbById: async (_, { id }, { dataSources: { Omdb } }) => {
+    try {
+      const omdb = await Movie.findById(id);
+      return omdb as Omdb;
+    } catch (error) {
+      throw new Error(error.message);
+    }
+  },
 };
+
+export const movieMutations: MutationResolvers = {};

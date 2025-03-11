@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 
 import { MoviesService } from './movies.service';
-import { AuthService } from './services/auth.service';
+import { AuthService } from './auth.service';
 import { ApolloTestingModule } from 'apollo-angular/testing';
 
 describe('MoviesService', () => {

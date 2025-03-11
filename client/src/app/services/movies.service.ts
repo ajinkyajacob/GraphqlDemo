@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { Apollo, gql } from 'apollo-angular';
-import { AuthService } from './services/auth.service';
-
+import { AuthService } from './auth.service';
+import { Omdb, MoviePaginated, Movie } from '../../generated/graphql';
 @Injectable({
   providedIn: 'root',
 })
@@ -11,18 +11,7 @@ export class MoviesService {
 
   getMovies(payload: { page: number; pageSize: number }) {
     return this.apollo.watchQuery<{
-      movies: {
-        data: Array<{
-          id: string;
-          title: string;
-          description: string;
-          imageUrl: string;
-          time: string;
-          year: string;
-          rating: string;
-        }>;
-        totalRecords: number;
-      };
+      movies: MoviePaginated;
     }>({
       query: gql`
         query movies($page: Int!, $pageSize: Int!) {
@@ -35,6 +24,9 @@ export class MoviesService {
               rating
               time
               year
+              omdb {
+                Poster
+              }
             }
             totalRecords
           }
@@ -47,18 +39,10 @@ export class MoviesService {
 
   getMovieById(payload: { id: string }) {
     return this.apollo.watchQuery<{
-      movie: {
-        id: string;
-        title: string;
-        description: string;
-        imageUrl: string;
-        time: string;
-        year: string;
-        rating: string;
-      };
+      movie: Movie;
     }>({
       query: gql`
-        query ($id: String!) {
+        query ($id: ID!) {
           movie(id: $id) {
             id
             title

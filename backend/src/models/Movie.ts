@@ -45,7 +45,7 @@ export interface IMovie extends Document {
   omdb: IOMDB;
 }
 
-export const omdb = new Schema<IOMDB>({
+export const omdbSchema = new Schema<IOMDB>({
   Title: { type: String },
   Year: { type: String },
   Rated: { type: String },
@@ -77,14 +77,10 @@ const movieSchema = new Schema<IMovie>(
     rating: { type: String, required: true },
     time: { type: String, required: true },
     year: { type: String, required: true },
-    omdb,
+    omdb: omdbSchema,
   },
   { timestamps: true },
 );
 
-const movie = mongoose.model<IMovie>('Movie', movieSchema);
-
-export type MovieType = typeof movie;
-
-// Create and export the User model
-export default movie;
+export const Movie = mongoose.model<IMovie>('Movie', movieSchema);
+export const Omdb = mongoose.model<IMovie>('OMDB', omdbSchema);

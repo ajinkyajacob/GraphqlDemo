@@ -11,13 +11,18 @@ import morgan from 'morgan';
 import helmet from 'helmet';
 import { getUserFromToken } from './utils/passwordUtils';
 import { connect, Mongoose } from 'mongoose';
-import Movie, { MovieType } from './models/Movie';
-import User, { UserType } from './models/User';
+import { Movie, Omdb, omdbSchema } from './models/Movie';
+import { User } from './models/User';
 import { JwtPayload } from 'jsonwebtoken';
 
 export interface MyContext {
   user: JwtPayload;
-  dataSources: { Movie: MovieType; User: UserType; mongoose: Mongoose };
+  dataSources: {
+    Movie: typeof Movie;
+    User: typeof User;
+    Omdb: typeof Omdb;
+    mongoose: Mongoose;
+  };
 }
 
 configDotenv();
@@ -98,7 +103,7 @@ async function init() {
         }
         return {
           user,
-          dataSources: { Movie, User, mongoose },
+          dataSources: { Movie, User, mongoose, Omdb },
         } as unknown as MyContext;
       },
     }) as unknown as RequestHandler,

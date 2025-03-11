@@ -127,7 +127,9 @@ export const authorizationInterceptor: HttpInterceptorFn = (r, n) => {
   const token = injectAuth().token();
   return n(
     r.clone({
-      headers: r.headers.set('authorization', token),
+      headers: r.headers.get('authorization')
+        ? r.headers
+        : r.headers.set('authorization', token),
     }),
   );
 };
