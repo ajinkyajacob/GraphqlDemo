@@ -2,15 +2,15 @@
 <div class="grid grid-cols-4 gap-4">
   @for (name of castNames(); track $index) {
     <div
-      class="h bg-gray-50 rounded-lg p-3 hover:shadow-md transition-all duration-300 hover:scale-105 group"
+      class="bg-gray-50 rounded-lg p-3 hover:shadow-md transition-all duration-300 hover:scale-105 group"
     >
       <img
         [src]="castProfileUrls()[$index] | async"
-        alt="{{ name }}"
+        [alt]="name"
         class="w-full h-40 object-cover rounded-md mb-2 group-hover:brightness-110"
       />
       <h3 class="font-bold">{{ name }}</h3>
-      <p class="text-gray-600 text-sm">Dom Cobb</p>
+      <!-- <p class="text-gray-600 text-sm">Dom Cobb</p> -->
     </div>
   }
 </div>

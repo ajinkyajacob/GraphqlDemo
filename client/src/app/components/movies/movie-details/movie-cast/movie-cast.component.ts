@@ -22,11 +22,21 @@ import { of } from 'rxjs';
 export class MovieCastComponent {
   castNames = input.required<string[]>();
   movieDB = injectMovieDB();
-  castProfileUrls = computed(() => {
+  castProfileUrls = linkedSignal(() => {
     const castNames = this.castNames();
     if (castNames && castNames.length)
       return this.movieDB.getImageUrls(castNames);
-    return [of(''), of('')];
+    return [
+      of('svgs/imagePlaceholder.svg'),
+      of('svgs/imagePlaceholder.svg'),
+      of('svgs/imagePlaceholder.svg'),
+    ];
   });
-  ngOnChanges() {}
+  constructor() {
+    this.castProfileUrls.set([
+      of('svgs/imagePlaceholder.svg'),
+      of('svgs/imagePlaceholder.svg'),
+      of('svgs/imagePlaceholder.svg'),
+    ]);
+  }
 }

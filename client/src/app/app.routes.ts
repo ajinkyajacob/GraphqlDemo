@@ -8,6 +8,7 @@ import {
   UrlTree,
   ViewTransitionInfo,
   withComponentInputBinding,
+  withInMemoryScrolling,
   withViewTransitions,
 } from '@angular/router';
 import { AuthService } from './services/auth.service';
@@ -75,6 +76,7 @@ export const routes: Routes = [
 
 export const routerFeatures: RouterFeatures[] = [
   withViewTransitions({ onViewTransitionCreated }),
+  withInMemoryScrolling({ scrollPositionRestoration: 'enabled' }),
   withComponentInputBinding(),
 ];
 

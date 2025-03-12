@@ -23,6 +23,7 @@ import {
 } from './services/auth.service';
 import { injectStorage } from './storage.service';
 import { provideServiceWorker } from '@angular/service-worker';
+import { DatePipe } from '@angular/common';
 
 export const GRAPHQL_BASE_URL = new InjectionToken<string>('GRAPHQL_BASE_URL');
 

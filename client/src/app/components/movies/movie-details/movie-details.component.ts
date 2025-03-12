@@ -4,12 +4,23 @@ import { rxResource } from '@angular/core/rxjs-interop';
 import { injectMoviesService } from '../../../services/movies.service';
 import { map } from 'rxjs';
 import { MovieCastComponent } from './movie-cast/movie-cast.component';
+import { MovieDetailsCardComponent } from './movie-details-card/movie-details-card.component';
+import { MovieGenresComponent } from './movie-genres/movie-genres.component';
+import { ViewTransitionDirective } from '../../../directives/transition-directive';
+import { MovieRatingsComponent } from './movie-ratings/movie-ratings.component';
 
 /* Don't forget to download the CSS file too
 OR remove the styleUrls if you're already using Tailwind */
 
 @Component({
   selector: 'app-movie-details',
+  imports: [
+    MovieCastComponent,
+    MovieDetailsCardComponent,
+    MovieGenresComponent,
+    ViewTransitionDirective,
+    MovieRatingsComponent,
+  ],
   template: `
     <div class="w-auto bg-gray-100 min-h-[800px] font-sans">
       <main class="p-6">
@@ -19,11 +30,16 @@ OR remove the styleUrls if you're already using Tailwind */
               class="absolute inset-0 bg-gradient-to-t from-black to-transparent z-10"
             ></div>
             <img
-              [src]="data.value()?.imageUrl ? data.value()?.imageUrl : ''"
+              appViewTransition="card-image"
+              [id]="id()"
+              [src]="data.value()?.imageUrl ?? 'svgs/imagePlaceholder.svg'"
               alt="Movie Banner"
-              class="w-full h-full object-cover object-center transition-transform duration-700 hover:scale-105 banner"
+              class="w-full h-full object-cover object-top transition-transform duration-700 hover:scale-105 "
             />
             <div class="absolute bottom-0 left-0 p-8 z-20 w-full">
+              @if (ratings(); as ratings) {
+                <app-movie-ratings [ratings]="ratings" />
+              }
               <div class="flex items-center space-x-4 mb-2">
                 <span
                   class="bg-yellow-500 text-black px-3 py-1 rounded-full text-sm font-bold"
@@ -129,61 +145,12 @@ OR remove the styleUrls if you're already using Tailwind */
               </div>
             </div>
             <div>
-              <div class="bg-gray-50 p-6 rounded-lg shadow-md mb-6">
-                <h2 class="text-xl font-bold mb-4">Movie Details</h2>
-                <div class="space-y-3">
-                  <div class="flex justify-between">
-                    <span class="text-gray-600">Director</span>
-                    <span class="font-medium">Christopher Nolan</span>
-                  </div>
-                  <div class="flex justify-between">
-                    <span class="text-gray-600">Writers</span>
-                    <span class="font-medium">Christopher Nolan</span>
-                  </div>
-                  <div class="flex justify-between">
-                    <span class="text-gray-600">Release Date</span>
-                    <span class="font-medium">July 16, 2010</span>
-                  </div>
-                  <div class="flex justify-between">
-                    <span class="text-gray-600">Runtime</span>
-                    <span class="font-medium">2h 28m</span>
-                  </div>
-                  <div class="flex justify-between">
-                    <span class="text-gray-600">Budget</span>
-                    <span class="font-medium">$160 million</span>
-                  </div>
-                  <div class="flex justify-between">
-                    <span class="text-gray-600">Box Office</span>
-                    <span class="font-medium">$836.8 million</span>
-                  </div>
-                </div>
-              </div>
-              <div class="bg-gray-50 p-6 rounded-lg shadow-md mb-6">
-                <h2 class="text-xl font-bold mb-4">Genres</h2>
-                <div class="flex flex-wrap gap-2">
-                  <span
-                    class="px-3 py-1 bg-indigo-100 text-indigo-800 rounded-full hover:bg-indigo-200 transition-colors duration-300 cursor-pointer"
-                  >
-                    Action </span
-                  ><span
-                    class="px-3 py-1 bg-indigo-100 text-indigo-800 rounded-full hover:bg-indigo-200 transition-colors duration-300 cursor-pointer"
-                  >
-                    Sci-Fi </span
-                  ><span
-                    class="px-3 py-1 bg-indigo-100 text-indigo-800 rounded-full hover:bg-indigo-200 transition-colors duration-300 cursor-pointer"
-                  >
-                    Thriller </span
-                  ><span
-                    class="px-3 py-1 bg-indigo-100 text-indigo-800 rounded-full hover:bg-indigo-200 transition-colors duration-300 cursor-pointer"
-                  >
-                    Adventure </span
-                  ><span
-                    class="px-3 py-1 bg-indigo-100 text-indigo-800 rounded-full hover:bg-indigo-200 transition-colors duration-300 cursor-pointer"
-                  >
-                    Mystery
-                  </span>
-                </div>
-              </div>
+              @if (movieDetailsCard(); as movieDetailsCard) {
+                <app-movie-details-card [details]="movieDetailsCard" />
+              }
+              @if (genres(); as genres) {
+                <app-movie-genres [genres]="genres" />
+              }
               <div class="bg-gray-50 p-6 rounded-lg shadow-md mb-6">
                 <h2 class="text-xl font-bold mb-4">Where to Watch</h2>
                 <div class="grid grid-cols-3 gap-3">
@@ -515,14 +482,7 @@ OR remove the styleUrls if you're already using Tailwind */
       </footer>
     </div>
   `,
-  styles: [
-    `
-      .banner {
-        view-transition-name: card-image;
-      }
-    `,
-  ],
-  imports: [MovieCastComponent],
+  styles: [``],
 })
 export class MovieDetailsComponent {
   id = input.required<string>();
@@ -539,5 +499,17 @@ export class MovieDetailsComponent {
 
   actors = computed(() => this.data.value()?.omdb?.Actors?.split(', ') ?? []);
 
-  ef = effect(() => console.log(this.data.value()));
+  ratings = computed(() => this.data.value()?.omdb?.Ratings ?? []);
+  genres = computed(() => this.data.value()?.omdb?.Genre?.split(', ') ?? []);
+
+  movieDetailsCard = computed(() => {
+    const omdb = this.data.value()?.omdb;
+    if (omdb) {
+      const { Director, Writer, Released, Runtime, BoxOffice } = omdb;
+      return { Director, Writer, Released, Runtime, BoxOffice };
+    }
+    return null;
+  });
+
+  ef = effect(() => console.log(this.data.value(), this.movieDetailsCard()));
 }

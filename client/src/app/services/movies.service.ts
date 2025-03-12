@@ -52,6 +52,10 @@ export class MoviesService {
             year
             rating
             omdb {
+              BoxOffice
+              Released
+              Runtime
+              Writer
               Awards
               Actors
               Country

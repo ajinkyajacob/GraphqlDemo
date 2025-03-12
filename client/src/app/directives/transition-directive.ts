@@ -17,19 +17,12 @@ export class ViewTransitionDirective {
 
   protected readonly viewTransitionName = computed(() => {
     const currentTransition = this.viewTranistionService.currentTransition();
-    console.log(
-      currentTransition?.to.firstChild?.firstChild?.params['id'],
-      this.id(),
-    );
 
     const apply =
       currentTransition?.to.firstChild?.firstChild?.params['id'] ===
         this.id() ||
       currentTransition?.from.firstChild?.firstChild?.params['id'] ===
         this.id();
-    return apply ? this.name() : 'none';
+    return apply ? this.name() + this.id() : 'none';
   });
-  e = effect(() =>
-    console.log('viewTransitionName', this.viewTransitionName()),
-  );
 }
